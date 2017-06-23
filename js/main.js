@@ -163,7 +163,7 @@ $(function () {
 	}
 
 
-	function chooseFaceUpCards(){}
+	function chooseFaceUpCards(){
 
 		p1FaceUp.push(deck[chooseRandomCard()]);
 		p1FaceUp.push(deck[chooseRandomCard()]);
@@ -188,8 +188,24 @@ $(function () {
 	}
 
 
+	function swapCardHandToFaceUpP1(cardFromHandIndex, cardFromFaceUpIndex){
 
+		var p1HandCard = p1Hand[cardFromHandIndex];
+		var p1FaceUpCard = p1FaceUp[cardFromFaceUpIndex];
 
+		p1Hand.splice(cardFromHandIndex,1);
+		p1FaceUp.splice(cardFromFaceUpIndex,1);
+
+		p1Hand.push(p1FaceUpCard);
+		p1FaceUp.push(p1HandCard);
+
+	}
+
+	chooseFaceDownCards();
+	chooseFaceUpCards();
+	chooseHands();
+
+	swapCardHandToFaceUpP1(0,0);
 
 
 });
