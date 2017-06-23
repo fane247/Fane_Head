@@ -143,10 +143,54 @@ $(function () {
 	var p2FaceUp =[];
 	var p2Hand =[];
 
-	
+	function chooseRandomCard(){
+
+    	return Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+
+	}
+
+	function chooseFaceDownCards(){
+
+		p1FaceDown.push(deck[chooseRandomCard()]);
+		p1FaceDown.push(deck[chooseRandomCard()]);
+		p1FaceDown.push(deck[chooseRandomCard()]);
+
+		p2FaceDown.push(deck[chooseRandomCard()]);
+		p2FaceDown.push(deck[chooseRandomCard()]);
+		p2FaceDown.push(deck[chooseRandomCard()]);
+
+
+	}
+
+
+	function chooseFaceUpCards(){}
+
+		p1FaceUp.push(deck[chooseRandomCard()]);
+		p1FaceUp.push(deck[chooseRandomCard()]);
+		p1FaceUp.push(deck[chooseRandomCard()]);
+
+		p2FaceUp.push(deck[chooseRandomCard()]);
+		p2FaceUp.push(deck[chooseRandomCard()]);
+		p2FaceUp.push(deck[chooseRandomCard()]);
+
+	}
+
+	function chooseHands(){
+
+		p1Hand.push(deck[chooseRandomCard()]);
+		p1Hand.push(deck[chooseRandomCard()]);
+		p1Hand.push(deck[chooseRandomCard()]);
+
+		p2Hand.push(deck[chooseRandomCard()]);
+		p2Hand.push(deck[chooseRandomCard()]);
+		p2Hand.push(deck[chooseRandomCard()]);
+
+	}
 
 
 
 
 
-})
+
+});
+
