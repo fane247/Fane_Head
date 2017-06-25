@@ -1,4 +1,144 @@
-body {
-	background-color: teal;
+main {
+	border-style: solid;
+	border-width: 1px;
+	width: 1054px;
+    height: 744px;
+    margin: 0 auto;
+    position: relative;
 }	
+
+#p2-name{
+
+	display: inline-block;
+	margin-left: 24px;
+	margin-top: 0px;
+	position: absolute;
+
+}
+
+#p2board-cards {
+
+	border-style: solid;
+	border-width: 1px;
+	height: 159px;
+	width: 300px;
+	display: inline-block;
+	position: relative;
+	margin-top: 26px;
+	margin-left: 24px;
+
+}
+
+.face-up-card {
+
+	height: 153px;
+	width: 100px;
+	border-style: solid;
+	border-width: 1px;
+	background-color: white;
+	position: absolute;
+	top: 17px;
+
+}
+
+.card-suit-container {
+
+	height: 15px;
+	width: 15px;
+
+}
+
+.card-suit-container-small-top img {
+
+	height: 15px;
+	width: 15px;
+    margin-left: 3px;
+
+}
+
+.card-suit-container-small-bottom img {
+
+	height: 15px;
+	width: 15px;
+    float: right;
+    margin-right: 3px;
+    margin-top: 14px;
+
+}
+
+.card-value {
+
+	display: inline-block;
+    margin-left: 3px;
+}
+
+.card-suit-container-large img {
+
+    height: 77px;
+    width: 68px;
+    margin-left: 18px;
+
+}
+
+
+.face-down-card img {
+
+	height: 153px;
+    width: 100px;
+
+
+}
+
+.player2-row{
+
+	position: relative;
+	margin-top: 22px;
+
+}
+
+#p2card-slot-2{
+	position: absolute;
+    top: 0px;
+    left: 122px;
+}
+
+#p2card-slot-3{
+	position: absolute;
+ 	top: 0px;
+    left: 244px;
+
+}
+
+#player2-hand{
+
+    border-style: solid;
+    border-width: 1px;
+    height: 159px;
+    width: 558px;
+    display: inline-block;
+    position: absolute;
+    left: 426px;
+    top: 0;
+    /*overflow: scroll;*/
+}
+
+.p2hand-card {
+
+	left:0px;
+}
+
+#p2ShowCards{
+
+	position: absolute;
+	top: -38px;
+    height: 23px;
+    width: 100px;
+    border-style: solid;
+    border-width: 1px;
+
+}
+
+/*player 1*/
+
+
 
