@@ -271,6 +271,9 @@ $(function () {
 
 	function updateP1FaceUpView(){
 
+		$p1CardSlots.find('.face-up-card').remove();
+		// $p1CardSlots.find('.highlighted').remove();
+
 		for (var i = 0; i < p1FaceUp.length; i++) {
 
 			var $faceUpCard = generateFaceUpCardImage(p1FaceUp[i]);
@@ -281,6 +284,8 @@ $(function () {
 	}
 
 	function updateP1HandView(){
+
+		$p1HandElement.find('.card-hand-container').remove();
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -384,7 +389,7 @@ $(function () {
 				break;
 
 			case 'c':
-				suitImage = hearts;
+				suitImage = clubs;
 				break;
 		}
 
@@ -436,6 +441,8 @@ $(function () {
 
 		p1ValidSwap = $p1HandElement.find('.highlighted').length === $p1CardSlots.find('.highlighted').length;
 
+		debugger
+
 		if (p1ValidSwap) {
 
 			var $p2selectedHand = $p1HandElement.find('.highlighted');
@@ -450,6 +457,8 @@ $(function () {
 
 		}
 
+		debugger
+
 		updateP1View();
 
 		//can't swap more than once
@@ -459,7 +468,7 @@ $(function () {
 	function p2VerifyCardSwap() {
 
 		p2ValidSwap = $p1HandElement.find('.highlighted').length === $p1CardSlots.find('.highlighted').length;
-		debugger;
+		debugger
 
 	}
 
