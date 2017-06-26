@@ -42,10 +42,7 @@ $(function () {
 	var $p1SwapCards = $('#p1-swap-cards');
 	var $p2SwapCards = $('#p2-swap-cards');
 
-	var p1ValidSwap = false;
-	var p2ValidSwap = false;
-
-
+	var isPlayer1Turn = true;
 
 	function chooseRandomCard(){
 
@@ -129,8 +126,6 @@ $(function () {
 		var p1HandCard = getCardByName(cardFromHand);
 		var p1FaceUpCard = getCardByName(cardFromFaceUp);
 
-		debugger
-
 		cardFromHandIndex = p1Hand.indexOf(p1HandCard);
 		cardFromFaceUpIndex = p1FaceUp.indexOf(p1FaceUpCard);
 
@@ -139,6 +134,22 @@ $(function () {
 
 		p1Hand.push(p1FaceUpCard);
 		p1FaceUp.push(p1HandCard);
+
+	}
+
+	function swapCardHandToFaceUpP2(cardFromHand, cardFromFaceUp){
+
+		var p2HandCard = getCardByName(cardFromHand);
+		var p2FaceUpCard = getCardByName(cardFromFaceUp);
+
+		cardFromHandIndex = p2Hand.indexOf(p2HandCard);
+		cardFromFaceUpIndex = p2FaceUp.indexOf(p2FaceUpCard);
+
+		p2Hand.splice(cardFromHandIndex,1);
+		p2FaceUp.splice(cardFromFaceUpIndex,1);
+
+		p2Hand.push(p2FaceUpCard);
+		p2FaceUp.push(p2HandCard);
 
 	}
 
@@ -208,6 +219,8 @@ $(function () {
 
 	function updateP2FaceUpView(){
 
+		$p2CardSlots.find('.face-up-card').remove();
+
 		for (var i = 0; i < p2FaceUp.length; i++) {
 
 			var $faceUpCard = generateFaceUpCardImage(p2FaceUp[i]);
@@ -218,6 +231,8 @@ $(function () {
 	}
 
 	function updateP2HandView(){
+
+		$p2HandElement.find('.card-hand-container').remove();
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -336,14 +351,25 @@ $(function () {
 
 		if (zIndex === '0') {
 
-			$('.p2hand-face-up-card').css('z-index', '-1');
+			p2HideHand();
 
 		} else {
 
-			$('.p2hand-face-up-card').css('z-index', '0');
+			p2ShowHand();
 		}
 
 
+	}
+
+	function p2HideHand() {
+
+		$('.p2hand-face-up-card').css('z-index', '-1');
+
+	}
+
+	function p2ShowHand() {
+
+		$('.p2hand-face-up-card').css('z-index', '0');
 	}
 
 
@@ -355,14 +381,25 @@ $(function () {
 
 		if (zIndex === '0') {
 
-			$('.p1hand-face-up-card').css('z-index', '-1');
+			p1HideHand();
 
 		} else {
 
-			$('.p1hand-face-up-card').css('z-index', '0');
+			p1ShowHand();
 		}
 
 
+	}
+
+	function p1HideHand() {
+
+		$('.p1hand-face-up-card').css('z-index', '-1');
+
+	}
+
+	function p1ShowHand() {
+
+		$('.p1hand-face-up-card').css('z-index', '0');
 	}
 
 
@@ -421,7 +458,20 @@ $(function () {
 		$p1HandElement.on('click', '#p1-show-cards', p1ToggleShowHand);
 		$p1HandElement.on('click', '.p1hand-face-up-card', highlightCard);
 		$p1CardSlots.on('click', '.face-up-card', highlightCard);
+		$p1SwapCards.click({handElement: $p1HandElement, cardsSlots: $p1CardSlots}, verifyCardSwap)
+		$p1Ready.click(p1FinishSetup)
 
+	}
+
+	function p1FinishSetup(){
+
+		$p1HandElement.off();
+		$p1CardSlots.off();
+		$p1SwapCards.off();
+		$p1Ready.off();
+		p1HideHand();
+		swapPlayer();
+		p2setupRound();
 
 	}
 
@@ -430,62 +480,73 @@ $(function () {
 		$p2HandElement.on('click', '#p2-show-cards', p2ToggleShowHand);
 		$p2HandElement.on('click', '.p2hand-face-up-card', highlightCard);
 		$p2CardSlots.on('click', '.face-up-card', highlightCard);
-
-		$p1SwapCards.click(p1VerifyCardSwap)
-
-
+		$p2SwapCards.click({handElement: $p2HandElement, cardsSlots: $p2CardSlots}, verifyCardSwap);
+		$p2Ready.click(p2FinishSetup);
 
 	}
 
-	function p1VerifyCardSwap() {
+	function p2FinishSetup(){
 
-		p1ValidSwap = $p1HandElement.find('.highlighted').length === $p1CardSlots.find('.highlighted').length;
+		$p2HandElement.off();
+		$p2CardSlots.off();
+		$p2SwapCards.off();
+		$p2Ready.off();
+		p2HideHand();
 
-		debugger
+	}
 
-		if (p1ValidSwap) {
+	function verifyCardSwap(event) {
 
-			var $p2selectedHand = $p1HandElement.find('.highlighted');
-			var $p2selectedFaceUp = $p1CardSlots.find('.highlighted');
 
-			for (var i = 0; i < $p2selectedHand.length; i++) {
+		if (!isPlayer1Turn) {
 
-				
-				swapCardHandToFaceUpP1($p2selectedHand.eq(i).data('name'),$p2selectedFaceUp.eq(i).data('name'));
+			debugger;
+		}
+
+		var validSwap = event.data.handElement.find('.highlighted').length === event.data.cardsSlots.find('.highlighted').length;
+
+		if (validSwap) {
+
+			var $selectedHand = event.data.handElement.find('.highlighted');
+			var $selectedFaceUp = event.data.cardsSlots.find('.highlighted');
+
+			for (var i = 0; i < $selectedHand.length; i++) {
+
+				if (isPlayer1Turn) {
+
+					swapCardHandToFaceUpP1($selectedHand.eq(i).data('name'),$selectedFaceUp.eq(i).data('name'));
+
+				}else {
+
+					swapCardHandToFaceUpP2($selectedHand.eq(i).data('name'),$selectedFaceUp.eq(i).data('name'));
+
+				}
 
 			}
 
 		}
 
-		debugger
+		if (isPlayer1Turn) {
 
-		updateP1View();
+			updateP1View();
 
-		//can't swap more than once
+		}else{
 
-	}
-
-	function p2VerifyCardSwap() {
-
-		p2ValidSwap = $p1HandElement.find('.highlighted').length === $p1CardSlots.find('.highlighted').length;
-		debugger
+			updateP2View();
+		}
 
 	}
 
+	function swapPlayer() {
 
-
-
-
+		isPlayer1Turn = isPlayer1Turn ? false : true;
+	}
 
 
 	initalSetup();
 	p1setupRound();
-	$p1SwapCards.click(p1VerifyCardSwap)
-	
 
 	
-
-	// swapCardHandToFaceUpP1(0,0);
 
 
 
