@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Fane Head</title>
+		<script type="text/javascript" src="js/deck.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script type="text/javascript" src="js/main.js"></script>
@@ -12,24 +13,32 @@
 			<div id="p2-row">
 				<p id="p2-name">player 2</p>
 				<div id="p2board-cards">
-					<div id="p2card-slot-1">
-						<div class="face-down-card" data-name="" data-suit="" data-value="">
-							<img src="images/back.jpg">
+					<div id="p2-card-slots">
+						<div id="p2card-slot-1">
+							<div class="face-down-card" data-name="" data-suit="" data-value="">
+								<img src="images/back.jpg">
+							</div>
 						</div>
-					</div>
-					<div id="p2card-slot-2">
-						<div class="face-down-card">
-							<img src="images/back.jpg">
+						<div id="p2card-slot-2">
+							<div class="face-down-card">
+								<img src="images/back.jpg">
+							</div>
 						</div>
-					</div>
-					<div id="p2card-slot-3">
-						<div class="face-down-card">
-							<img src="images/back.jpg">
+						<div id="p2card-slot-3">
+							<div class="face-down-card">
+								<img src="images/back.jpg">
+							</div>
 						</div>
-					</div>
+					</div>	
 					<div id="p2-hand">
-						<div id="p2ShowCards">
+						<div id="p2-show-cards">
 								Show Cards
+						</div>
+						<div id="p2-ready">
+							Ready
+						</div>
+						<div id="p2-swap-cards">
+							Swap
 						</div>
 
 					</div>
@@ -41,30 +50,38 @@
 					<img src="images/back.jpg">
 				</div>
 				<div id="cards-in-play"></div>
+				<div id="errorBox"></div>
 			</div>
 			<div id="p1-row">
 				<p id="p1-name">player 1</p>
 				<div id="p1board-cards">
-					<div id="p1card-slot-1">
-						<div class="face-down-card" data-name="" data-suit="" data-value="">
-							<img src="images/back.jpg">
+					<div id="p1-card-slots">
+						<div id="p1card-slot-1">
+							<div class="face-down-card" data-name="" data-suit="" data-value="">
+								<img src="images/back.jpg">
+							</div>
 						</div>
-					</div>
-					<div id="p1card-slot-2">
-						<div class="face-down-card">
-							<img src="images/back.jpg">
+						<div id="p1card-slot-2">
+							<div class="face-down-card">
+								<img src="images/back.jpg">
+							</div>
 						</div>
-					</div>
-					<div id="p1card-slot-3">
-						<div class="face-down-card">
-							<img src="images/back.jpg">
+						<div id="p1card-slot-3">
+							<div class="face-down-card">
+								<img src="images/back.jpg">
+							</div>
 						</div>
 					</div>
 					<div id="p1-hand">
-						<div id="p1ShowCards">
+						<div id="p1-show-cards">
 								Show Cards
 						</div>
-
+						<div id="p1-ready">
+							Ready
+						</div>
+						<div id="p1-swap-cards">
+							Swap
+						</div>
 					</div>
 				</div>
 			</div>
