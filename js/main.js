@@ -224,7 +224,7 @@ $(function () {
 		var cardValue = cardObject.value.toString();
 		var cardSuitImage = getSuitImage(cardSuit);
 
-		var $faceUpCard = $('<div class="face-up-card" data-name='+ cardName+' data-suit='+cardSuit+' data-value='+cardValue+'>'
+		var $faceUpCard = $('<div class="" data-name='+ cardName+' data-suit='+cardSuit+' data-value='+cardValue+'>'
 								+'<div class="card-value">'
 									+cardRank
 								+'</div>'
@@ -258,6 +258,11 @@ $(function () {
 
 		return $faceDown;
 
+	}
+
+	function generateHandCardContainer(){
+
+		return $('<div class="card-hand-container"></div>');
 
 	}
 
@@ -271,7 +276,8 @@ $(function () {
 
 		for (var i = 0; i < p2FaceUp.length; i++) {
 
-			var $faceUpCard = generateFaceUpCardImage(p2FaceUp[i])
+			var $faceUpCard = generateFaceUpCardImage(p2FaceUp[i]);
+			$faceUpCard.addClass('face-up-card');
 			p2cardSlots[i].append($faceUpCard);
 		}
 
@@ -292,20 +298,31 @@ $(function () {
 				cardCount = 0;
 			}
 
+			var $handCardContainer = generateHandCardContainer();
+
+			var $faceDown = $('<div class="hand-face-down-card">'
+								+'<img src="images/back.jpg">'
+							+'</div>');
+
 			var $faceUpCard  = generateFaceUpCardImage(p2Hand[i]);
-			$faceUpCard.css('top', handTopOffset + 'px');
+
+			$faceUpCard.addClass('hand-face-up-card');
+
+			$handCardContainer.append($faceDown).append($faceUpCard);
+
+
+			$handCardContainer.css('top', handTopOffset + 'px');
 
 			if (cardCount !==0) {
 
 				handLeftOffset += 21;
-
-				$faceUpCard.css('left',handLeftOffset + 'px');
 				
 			}
 
+			$handCardContainer.css('left',handLeftOffset + 'px');
 
 
-			$player2HandElement.append($faceUpCard)
+			$player2HandElement.append($handCardContainer)
 
 		}
 
@@ -345,6 +362,21 @@ $(function () {
 	chooseFaceDownCards();
 	chooseFaceUpCards();
 	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+
 		
 
 	updateP2View();
