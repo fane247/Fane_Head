@@ -2,9 +2,10 @@ main {
 	border-style: solid;
 	border-width: 1px;
 	width: 1054px;
-    height: 744px;
+    height: 843px;
     margin: 0 auto;
     position: relative;
+    background: linear-gradient(#026406, #92d361);
 }	
 
 #p2-name{
@@ -18,8 +19,6 @@ main {
 
 #p2board-cards {
 
-	border-style: solid;
-	border-width: 1px;
 	height: 159px;
 	width: 300px;
 	display: inline-block;
@@ -49,7 +48,8 @@ main {
 	border-width: 1px;
 	background-color: white;
 	position: absolute;
-	top: 17px;
+	z-index: 0;
+	/*top: 17px;*/
 }
 
 .card-suit-container {
@@ -104,7 +104,7 @@ main {
 	
 	height: 153px;
     width: 100px;
-	top: 17px;
+	/*top: 17px;*/
 	position: absolute;
 
 }
@@ -129,7 +129,7 @@ main {
 
 }
 
-#player2-hand{
+#p2-hand{
 
     border-style: solid;
     border-width: 1px;
@@ -212,10 +212,8 @@ main {
 	position: absolute;
 	top: 516px;
     left: 0;
-	border-style: solid;
-	border-width: 1px;
-    height: 227px;
-    width: 1053px;
+    height: 326px;
+    width: 1054px;
 
 }
 
@@ -232,8 +230,6 @@ main {
 
 #p1board-cards{
 
-	border-style: solid;
-	border-width: 1px;
 	height: 159px;
 	width: 300px;
 	display: inline-block;
@@ -266,6 +262,53 @@ main {
     margin-left: 24px;
     margin-top: 0px;
     position: absolute;
+}
+
+.p1hand-face-up-card{
+
+	height: 153px;
+	width: 100px;
+	border-style: solid;
+	border-width: 1px;
+	background-color: white;
+	position: absolute;
+	z-index: 0;
+	/*top: 17px;*/
+
+}
+
+#p1-hand{
+
+    border-style: solid;
+    border-width: 1px;
+    height: 159px;
+    width: 558px;
+    display: inline-block;
+    position: absolute;
+    left: 426px;
+    top: 0;
+    /*overflow: scroll;*/
+}
+
+.p1hand-card {
+
+	left:0px;
+}
+
+#p1ShowCards{
+
+	position: absolute;
+	top: -27px;
+    height: 23px;
+    width: 100px;
+    border-style: solid;
+    border-width: 1px;
+
+}
+
+.highlighted {
+
+	background-color: yellow;
 }
 
 

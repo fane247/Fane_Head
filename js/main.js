@@ -154,9 +154,19 @@ $(function () {
 
 	p2cardSlots = [$p2cardSlot1, $p2cardSlot2, $p2cardSlot3];
 
-	var $player2HandElement = $('#player2-hand');
+	var $p1cardSlot1 = $('#p1card-slot-1');
+	var $p1cardSlot2 = $('#p1card-slot-2');
+	var $p1cardSlot3 = $('#p1card-slot-3');
 
-	var cardsInPlayIndexs = []
+	p1cardSlots = [$p1cardSlot1, $p1cardSlot2, $p1cardSlot3];
+
+	var $player2HandElement = $('#p2-hand');
+	var $player1HandElement = $('#p1-hand');
+
+	var cardsInPlayIndexs = [];
+
+	var $p1ShowCards = $('#p1ShowCards');
+	var $p2ShowCards = $('#p2ShowCards');
 
 
 	function chooseRandomCard(){
@@ -168,12 +178,12 @@ $(function () {
 
 		if (cardsInPlayIndexs.length === 0) {
 
-		var randomNumber = Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+		var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
 		cardsInPlayIndexs.push(randomNumber);
 
 		 }else while(cardIsTaken){
 
-			var randomNumber = Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+			var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
 
 			if (!cardsInPlayIndexs.includes(randomNumber)) {
 
@@ -188,6 +198,7 @@ $(function () {
 	}
 
 	function chooseFaceDownCards(){
+
 
 		p1FaceDown.push(deck[chooseRandomCard()]);
 		p1FaceDown.push(deck[chooseRandomCard()]);
@@ -290,13 +301,20 @@ $(function () {
 
 	}
 
+	function updateView(argument) {
+		
+		updateP2View();
+		updateP1View();
+	}
+
 	function updateP2View(){
 
-		// for (var i = 0; i < p2FaceDown.length; i++) {
+		updateP2FaceUpView();
+		updateP2HandView();
 
-		// 	var $faceDownCard = generateFaceDownCardImage(p2FaceDown[i])
-		// 	p2cardSlots[i].append($faceDownCard);
-		// }
+	}
+
+	function updateP2FaceUpView(){
 
 		for (var i = 0; i < p2FaceUp.length; i++) {
 
@@ -304,6 +322,10 @@ $(function () {
 			$faceUpCard.addClass('face-up-card');
 			p2cardSlots[i].append($faceUpCard);
 		}
+
+	}
+
+	function updateP2HandView(){
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -331,13 +353,7 @@ $(function () {
 
 			$handCardContainer.append($faceDown).append($faceUpCard);
 
-
 			$handCardContainer.css('top', handTopOffset + 'px');
-
-			if (i===0) {
-
-				// debugger
-			}
 
 			if (cardCount !==0) {
 
@@ -347,32 +363,113 @@ $(function () {
 
 			$handCardContainer.css('left',handLeftOffset + 'px');
 
+			$player2HandElement.append($handCardContainer);
 
-			$player2HandElement.append($handCardContainer)
-
-			cardCount++
-
+			cardCount++;
 		}
 
 	}
 
-	// function p2ShowHand(){
+	function updateP1View() {
 
-	// 	var zIndex = $('.p2hand-face-up-card').css('z-index')
+		updateP1FaceUpView();
+		updateP1HandView();
+		
+	}
 
-	// 	if (zIndex === 0) {
+	function updateP1FaceUpView(){
 
-	// 		$('.p2hand-face-up-card').css('z-index', -1);
+		for (var i = 0; i < p1FaceUp.length; i++) {
 
-	// 	} else {
+			var $faceUpCard = generateFaceUpCardImage(p1FaceUp[i]);
+			$faceUpCard.addClass('face-up-card');
+			p1cardSlots[i].append($faceUpCard);
+		}
 
-	// 		$('.p2hand-face-up-card').css('z-index', 0);
-	// 	}
+	}
+
+	function updateP1HandView(){
+
+		var handLeftOffset = 0;
+		var handTopOffset = 17;
+		var cardCount = 0; 
+
+		for (var i = 0; i < p1Hand.length; i++) {
+
+			if(cardCount > 20) {
+
+				//move next cards to the next row
+				handLeftOffset = 0;
+				handTopOffset += 36;
+				cardCount = 0;
+			}
+
+			var $handCardContainer = generateHandCardContainer();
+
+			var $faceDown = $('<div class="hand-face-down-card">'
+								+'<img src="images/back.jpg">'
+							+'</div>');
+
+			var $faceUpCard  = generateFaceUpCardImage(p1Hand[i]);
+
+			$faceUpCard.addClass('p1hand-face-up-card');
+
+			$handCardContainer.append($faceDown).append($faceUpCard);
+
+			$handCardContainer.css('top', handTopOffset + 'px');
+
+			if (cardCount !==0) {
+
+				handLeftOffset += 21;
+				
+			}
+
+			$handCardContainer.css('left',handLeftOffset + 'px');
+
+			$player1HandElement.append($handCardContainer);
+
+			cardCount++;
+		}
+
+	}
+
+	function p2ShowHand(){
+
+		var zIndex = $('.p2hand-face-up-card').css('z-index')
+
+		if (zIndex === '0') {
+
+			$('.p2hand-face-up-card').css('z-index', '-1');
+
+		} else {
+
+			$('.p2hand-face-up-card').css('z-index', '0');
+		}
 
 
-	// }
+	}
 
-	// $('p2ShowCards').click(p2ShowHand)
+
+	
+
+	function p1ShowHand(){
+
+		var zIndex = $('.p1hand-face-up-card').css('z-index')
+
+		if (zIndex === '0') {
+
+			$('.p1hand-face-up-card').css('z-index', '-1');
+
+		} else {
+
+			$('.p1hand-face-up-card').css('z-index', '0');
+		}
+
+
+	}
+
+
+
 
 
 
@@ -403,14 +500,37 @@ $(function () {
 
 	}
 
+	function highlightCard() {
+
+		$(this).toggleClass('highlighted');
+		// body...
+	}
+
+
+
+
+
 
 
 	chooseFaceDownCards();
 	chooseFaceUpCards();
 	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
+	chooseHands();
 
 	
-	updateP2View();
+	updateView();
+
+	$player2HandElement.on('click', '#p2ShowCards', p2ShowHand);
+	$player1HandElement.on('click', '#p1ShowCards', p1ShowHand);
+
+	$player2HandElement.on('click', '.p2hand-face-up-card', highlightCard);
+	$player1HandElement.on('click', '.p1hand-face-up-card', highlightCard);
+
+
 
 
 
