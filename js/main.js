@@ -156,10 +156,34 @@ $(function () {
 
 	var $player2HandElement = $('#player2-hand');
 
+	var cardsInPlayIndexs = []
+
 
 	function chooseRandomCard(){
 
-		return Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+		var cardIsTaken = true;
+		var randomNumber = 0;
+
+		// debugger
+
+		if (cardsInPlayIndexs.length === 0) {
+
+		var randomNumber = Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+		cardsInPlayIndexs.push(randomNumber);
+
+		 }else while(cardIsTaken){
+
+			var randomNumber = Math.floor(Math.random() * (52 - 0 + 1)) + 0;
+
+			if (!cardsInPlayIndexs.includes(randomNumber)) {
+
+				cardsInPlayIndexs.push(randomNumber);
+				cardIsTaken=false;
+			}
+
+		}
+
+		return randomNumber;
 
 	}
 
@@ -287,9 +311,6 @@ $(function () {
 
 		for (var i = 0; i < p2Hand.length; i++) {
 
-			cardCount++
-
-
 			if(cardCount > 20) {
 
 				//move next cards to the next row
@@ -306,12 +327,17 @@ $(function () {
 
 			var $faceUpCard  = generateFaceUpCardImage(p2Hand[i]);
 
-			$faceUpCard.addClass('hand-face-up-card');
+			$faceUpCard.addClass('p2hand-face-up-card');
 
 			$handCardContainer.append($faceDown).append($faceUpCard);
 
 
 			$handCardContainer.css('top', handTopOffset + 'px');
+
+			if (i===0) {
+
+				// debugger
+			}
 
 			if (cardCount !==0) {
 
@@ -324,9 +350,29 @@ $(function () {
 
 			$player2HandElement.append($handCardContainer)
 
+			cardCount++
+
 		}
 
 	}
+
+	// function p2ShowHand(){
+
+	// 	var zIndex = $('.p2hand-face-up-card').css('z-index')
+
+	// 	if (zIndex === 0) {
+
+	// 		$('.p2hand-face-up-card').css('z-index', -1);
+
+	// 	} else {
+
+	// 		$('.p2hand-face-up-card').css('z-index', 0);
+	// 	}
+
+
+	// }
+
+	// $('p2ShowCards').click(p2ShowHand)
 
 
 
@@ -362,23 +408,8 @@ $(function () {
 	chooseFaceDownCards();
 	chooseFaceUpCards();
 	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
-	chooseHands();
 
-		
-
+	
 	updateP2View();
 
 

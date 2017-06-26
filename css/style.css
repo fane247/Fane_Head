@@ -41,7 +41,7 @@ main {
 
 }
 
-.hand-face-up-card {
+.p2hand-face-up-card {
 
 	height: 153px;
 	width: 100px;
@@ -109,7 +109,7 @@ main {
 
 }
 
-.player2-row{
+.p2-row{
 
 	position: relative;
 	margin-top: 22px;
@@ -150,7 +150,7 @@ main {
 #p2ShowCards{
 
 	position: absolute;
-	top: -38px;
+	top: -27px;
     height: 23px;
     width: 100px;
     border-style: solid;
@@ -166,7 +166,107 @@ main {
 
 }
 
+#game-board-row {
+
+ 	height: 154px;
+    width: 258px;
+    position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    top: 295px;
+    left: 300px;
+}
+
+
+#deck{
+
+	height: 153px;
+    width: 100px;
+    position: absolute;
+
+}
+
+#deck img {
+
+	height: 153px;
+    width: 100px;
+
+}
+
+#cards-in-play{
+
+	border-style: solid;
+	border-width: 1px;
+	height: 153px;
+    width: 100px;
+    position: absolute;
+    top: 0;
+    left: 156px;
+
+}
 /*player 1*/
+
+
+#p1-row {
+
+	position: absolute;
+	top: 516px;
+    left: 0;
+	border-style: solid;
+	border-width: 1px;
+    height: 227px;
+    width: 1053px;
+
+}
+
+#p1-hand {
+
+	border-style: solid;
+	border-width: 1px;
+	height: 159px;
+    width: 558px;
+    position: absolute;
+    left: 446px;
+    top: 0px;
+}
+
+#p1board-cards{
+
+	border-style: solid;
+	border-width: 1px;
+	height: 159px;
+	width: 300px;
+	display: inline-block;
+	position: relative;
+	margin-bottom: 26px;
+	margin-left: 24px;
+	top: 27px;
+
+
+}
+
+#p1card-slot-2{
+
+	position: absolute;
+    top: 0px;
+    left: 122px;
+
+}
+
+#p1card-slot-3{
+
+	position: absolute;
+    top: 0px;
+    left: 244px;
+
+}
+
+#p1-name {
+
+    margin-left: 24px;
+    margin-top: 0px;
+    position: absolute;
+}
 
 
 
