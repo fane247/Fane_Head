@@ -78,10 +78,10 @@ $(function () {
 	
 	};
 
-	var currentPlayer = player1;
-	var roundCounter = 0;
+	var currentPlayer = player2;
+	var roundCounter = 3; //set this to 0 when playing from the begining 
 
-	var cardsInPlayElement = $('#cards-in-play');
+	var $cardsInPlayElement = $('#cards-in-play');
 	var cardsInPlay = [];
 
 	var $gameBoardRow = $('#game-board-row');
@@ -246,16 +246,27 @@ $(function () {
 
 	}
 
-	function updateView(argument) {
+	function updateView() {
 		
 		updateP2View();
 		updateP1View();
+		hideHands();
 		updateGameBoardRow();
 	}
 
 	function updateGameBoardRow(){
 
-		$gameBoardRow.find('#cards-in-play');
+		$gameBoardRow.find('.face-up-card');
+
+		debugger;
+
+		for (var i = 0; i < cardsInPlay.length; i++) {
+
+			var $cardInPlay = generateFaceUpCardImage(cardsInPlay[i]);
+			$cardInPlay.addClass('card-in-play');
+			$cardsInPlayElement.append($cardInPlay);
+		}
+
 
 
 	}
@@ -417,9 +428,17 @@ $(function () {
 
 	}
 
+
 	function showHand() {
 
 		$('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index', '0');
+
+	}
+
+	function hideHands() {
+
+		$('.' + player1.playerName + 'hand-face-up-card').css('z-index', '-1');
+		$('.' + player2.playerName + 'hand-face-up-card').css('z-index', '-1');
 
 	}
 
@@ -496,36 +515,31 @@ $(function () {
 		chooseFaceDownCards();
 		chooseFaceUpCards();
 		chooseHands();
-		
 		updateView();
-
-		swapPlayer();
-		hideHand();
-		swapPlayer();
-		hideHand();
-		swapPlayer();
 
 	}
 
 	function setupRound() {
 
 		swapPlayer();
-		
+		debugger;
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
 		currentPlayer.swapCards.click({handElement: currentPlayer.handElement, cardsSlots: currentPlayer.cardSlotsElement}, verifyCardSwap)
-		currentPlayer.ready.click(finishSetup);
+		currentPlayer.ready.click(currentPlayerRemoveListeners);
 		roundCounter++;
+
+
 	}
 
-	function finishSetup(){
+	function currentPlayerRemoveListeners(){
 
 		currentPlayer.handElement.off();
 		currentPlayer.cardSlotsElement.off();
 		currentPlayer.swapCards.off();
 		currentPlayer.ready.off();
-		hideHand();
+		updateView();
 		
 		if (roundCounter <= 1) {
 
@@ -556,21 +570,11 @@ $(function () {
 
 		}else{
 
-			// ;
-			$errorBox.fadeIn();
-			$errorBox.html('you must swap an equal amount of cards from your hand to your face up cards')
-			setTimeout(fadeOutErrorBox, 3000);
+			displayError('you must swap an equal amount of cards from your hand to your face up cards')
 
 		}
 
-		if (isPlayer1Turn) {
-
-			updateP1View();
-
-		}else{
-
-			updateP2View();
-		}
+		updateView();
 
 	}
 
@@ -578,6 +582,14 @@ $(function () {
 
 		isPlayer1Turn = isPlayer1Turn ? false : true;
 		currentPlayer = (currentPlayer.playerName === player1.playerName) ? player2 : player1;
+	}
+
+	function displayError(text) {
+
+		$errorBox.fadeIn();
+		$errorBox.html(text);
+		setTimeout(fadeOutErrorBox, 3000);
+		// body...
 	}
 
 	function fadeOutErrorBox() {
@@ -600,28 +612,52 @@ $(function () {
 		swapPlayer();
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards)
+		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards);
 
 	}
 
 	function verifyChosenCards(event){
 
-		// debugger;
+		debugger;
 		var $chosenCards = event.data.handElement.find('.highlighted')
 		var sameRank = identical($chosenCards);
 		var validMove = false;
+		var errorMessage = '';
+
+		if (!sameRank) {
+
+			errorMessage = 'you can only play more than one card of the same rank!';
+
+		}
 
 		if (cardsInPlay.length === 0) {
 
 			validMove = true;
 
+		}else if(cardsInPlay[cardsInPlay.length-1] <= parseInt(event.data.handElement.find('.highlighted').data('value'))){
+
+			validMove = true;
+
+		}else {
+
+			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
 		}
+
+
 
 		if (validMove && sameRank) {
 
 			playMove($chosenCards);
 			removeCardsFromHand($chosenCards);
+			drawOneCard();
 			updateView();
+			currentPlayerRemoveListeners();
+			// swapPlayer();
+			// playOneRound();
+
+		}else {
+
+			displayError(errorMessage)
 
 		}
 
@@ -645,7 +681,7 @@ $(function () {
 
 		var cardsToPlay = []
 
-		// deckbugger
+		debugger;
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
@@ -653,14 +689,13 @@ $(function () {
 
 		}
 
-		cardsInPlay.concat(cardsToPlay);
-		console.log(cardsInPlay);
+		cardsInPlay = cardsInPlay.concat(cardsToPlay);
 
 	}
 
 	function removeCardsFromHand($chosenCards){
 
-		debugger;
+		// debugger;
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
@@ -680,8 +715,15 @@ $(function () {
 
 		}
 
+		debugger
+
 	}
 
+	function drawOneCard() {
+
+		currentPlayer.hand.push(deck[chooseRandomCard()])
+	
+	}
 
 	initalSetup();
 	// setupRound();

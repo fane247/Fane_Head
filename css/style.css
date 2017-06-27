@@ -227,6 +227,20 @@ main {
     left: 156px;
 
 }
+
+.card-in-play{
+
+	height: 153px;
+	width: 100px;
+	border-style: solid;
+	border-width: 1px;
+	background-color: white;
+	position: absolute;
+
+}
+
+
+
 /*player 1*/
 
 
