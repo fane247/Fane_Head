@@ -78,7 +78,8 @@ $(function () {
 	
 	};
 
-	var currentPlayer = player1
+	var currentPlayer = player1;
+	var roundCounter = 0;
 
 
 
@@ -389,56 +390,57 @@ $(function () {
 
 		if (zIndex === '0') {
 
-			p2HideHand();
+			hideHand();
 
 		} else {
 
-			p2ShowHand();
+			showHand();
 		}
 
 
 	}
 
-	function p2HideHand() {
+	function hideHand() {
 
 		$('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index', '-1');
 
 	}
 
-	function p2ShowHand() {
+	function showHand() {
 
 		$('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index', '0');
+
 	}
 
 
 	
 
-	function p1ToggleShowHand(){
+	// function p1ToggleShowHand(){
 
-		var zIndex = $('.p1hand-face-up-card').css('z-index')
+	// 	var zIndex = $('.p1hand-face-up-card').css('z-index')
 
-		if (zIndex === '0') {
+	// 	if (zIndex === '0') {
 
-			p1HideHand();
+	// 		p1HideHand();
 
-		} else {
+	// 	} else {
 
-			p1ShowHand();
-		}
+	// 		p1ShowHand();
+	// 	}
 
 
-	}
+	// }
 
-	function p1HideHand() {
+	// function p1HideHand() {
 
-		$('.p1hand-face-up-card').css('z-index', '-1');
+	// 	$('.p1hand-face-up-card').css('z-index', '-1');
 
-	}
+	// }
 
-	function p1ShowHand() {
+	// function p1ShowHand() {
 
-		$('.p1hand-face-up-card').css('z-index', '0');
-	}
+	// 	$('.p1hand-face-up-card').css('z-index', '0');
+	// }
 
 
 
@@ -486,35 +488,50 @@ $(function () {
 		
 		updateView();
 
-		// p1ToggleShowHand();
-		// p2ToggleShowHand();
-		toggleShowHand();
 		swapPlayer();
-		toggleShowHand();
+		hideHand();
 		swapPlayer();
-		debugger;
+		hideHand();
+		swapPlayer();
 
 	}
 
 	function setupRound() {
 
-		currentPlayer.handElement.on('click', '#p1-show-cards', toggleShowHand);
-		currentPlayer.handElement.on('click', '.p1hand-face-up-card', highlightCard);
+		swapPlayer();
+		debugger
+		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
+		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
 		currentPlayer.swapCards.click({handElement: currentPlayer.handElement, cardsSlots: currentPlayer.cardSlotsElement}, verifyCardSwap)
-		currentPlayer.ready.click(p1FinishSetup)
-
+		currentPlayer.ready.click(finishSetup);
+		roundCounter++;
 	}
 
-	function p1FinishSetup(){
+	function finishSetup(){
 
-		$p1HandElement.off();
-		$p1CardSlots.off();
-		$p1SwapCards.off();
-		$p1Ready.off();
-		p1HideHand();
-		swapPlayer();
-		p2setupRound();
+		// debugger
+
+		// $p1HandElement.off();
+		// $p1CardSlots.off();
+		// $p1SwapCards.off();
+		// $p1Ready.off();
+		// p1HideHand();
+		// swapPlayer();
+		// p2setupRound();
+
+		currentPlayer.handElement.off();
+		currentPlayer.cardSlotsElement.off();
+		currentPlayer.swapCards.off();
+		currentPlayer.ready.off();
+		hideHand();
+		
+
+		if (roundCounter <= 1) {
+
+			setupRound();
+
+		}	
 
 	}
 
@@ -539,12 +556,6 @@ $(function () {
 	}
 
 	function verifyCardSwap(event) {
-
-
-		if (!isPlayer1Turn) {
-
-			debugger;
-		}
 
 		var validSwap = event.data.handElement.find('.highlighted').length === event.data.cardsSlots.find('.highlighted').length;
 
@@ -582,7 +593,7 @@ $(function () {
 	function swapPlayer() {
 
 		isPlayer1Turn = isPlayer1Turn ? false : true;
-		currentPlayer = (currentPlayer === player1) ? player2 : player1;
+		currentPlayer = (currentPlayer.playerName === player1.playerName) ? player2 : player1;
 	}
 
 	function fadeOutErrorBox() {
