@@ -81,7 +81,8 @@ $(function () {
 	var currentPlayer = player1;
 	var roundCounter = 0;
 
-
+	var cardsInPlayElement = $('#cards-in-play');
+	var cardsInPlay = []
 
 	function chooseRandomCard(){
 
@@ -499,7 +500,7 @@ $(function () {
 	function setupRound() {
 
 		swapPlayer();
-		debugger
+		
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
@@ -510,50 +511,23 @@ $(function () {
 
 	function finishSetup(){
 
-		// debugger
-
-		// $p1HandElement.off();
-		// $p1CardSlots.off();
-		// $p1SwapCards.off();
-		// $p1Ready.off();
-		// p1HideHand();
-		// swapPlayer();
-		// p2setupRound();
-
 		currentPlayer.handElement.off();
 		currentPlayer.cardSlotsElement.off();
 		currentPlayer.swapCards.off();
 		currentPlayer.ready.off();
 		hideHand();
 		
-
 		if (roundCounter <= 1) {
 
 			setupRound();
 
+		}else{
+
+			playOneRound();
 		}	
 
 	}
 
-	function p2setupRound(){
-
-		$p2HandElement.on('click', '#p2-show-cards', toggleShowHand);
-		$p2HandElement.on('click', '.p2hand-face-up-card', highlightCard);
-		$p2CardSlots.on('click', '.face-up-card', highlightCard);
-		$p2SwapCards.click({handElement: $p2HandElement, cardsSlots: $p2CardSlots}, verifyCardSwap);
-		$p2Ready.click(p2FinishSetup);
-
-	}
-
-	function p2FinishSetup(){
-
-		$p2HandElement.off();
-		$p2CardSlots.off();
-		$p2SwapCards.off();
-		$p2Ready.off();
-		p2HideHand();
-
-	}
 
 	function verifyCardSwap(event) {
 
@@ -572,7 +546,7 @@ $(function () {
 
 		}else{
 
-			// debugger;
+			// ;
 			$errorBox.fadeIn();
 			$errorBox.html('you must swap an equal amount of cards from your hand to your face up cards')
 			setTimeout(fadeOutErrorBox, 3000);
@@ -611,9 +585,52 @@ $(function () {
 
 	// }
 
+	function playOneRound() {
+		
+		swapPlayer();
+		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
+		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
+		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards)
+
+	}
+
+	function verifyChosenCards(event){
+
+		// debugger;
+		var chosenCards = event.data.handElement.find('.highlighted').data('value');
+		var sameRank = allTheSame(chosenCards);
+		var validMove = false;
+
+		if (cardsInPlay.length === 0) {
+
+			validMove = true;
+		}
+
+		if (validMove && sameRank) {
+
+			
+			playMove();
+
+		}
+
+
+	}
+
+	function allTheSame(array) {
+
+	    var first = array[0];
+	    return array.every(function(element) {
+	        return element === first;
+	    });
+	}
+
+
+
 
 	initalSetup();
-	setupRound();
+	playOneRound();
+
+
 
 	
 
