@@ -82,7 +82,9 @@ $(function () {
 	var roundCounter = 0;
 
 	var cardsInPlayElement = $('#cards-in-play');
-	var cardsInPlay = []
+	var cardsInPlay = [];
+
+	var $gameBoardRow = $('#game-board-row');
 
 	function chooseRandomCard(){
 
@@ -248,6 +250,14 @@ $(function () {
 		
 		updateP2View();
 		updateP1View();
+		updateGameBoardRow();
+	}
+
+	function updateGameBoardRow(){
+
+		$gameBoardRow.find('#cards-in-play');
+
+
 	}
 
 	function updateP2View(){
@@ -597,46 +607,85 @@ $(function () {
 	function verifyChosenCards(event){
 
 		// debugger;
-		var chosenCards = event.data.handElement.find('.highlighted').data('value');
-		var sameRank = allTheSame(chosenCards);
+		var $chosenCards = event.data.handElement.find('.highlighted')
+		var sameRank = identical($chosenCards);
 		var validMove = false;
 
 		if (cardsInPlay.length === 0) {
 
 			validMove = true;
+
 		}
 
 		if (validMove && sameRank) {
 
-			
-			playMove();
+			playMove($chosenCards);
+			removeCardsFromHand($chosenCards);
+			updateView();
 
 		}
 
 
 	}
 
-	function allTheSame(array) {
 
-	    var first = array[0];
-	    return array.every(function(element) {
-	        return element === first;
-	    });
+	function identical($array) {
+
+	    for(var i = 0; i < $array.length - 1; i++) {
+	        if($array.eq(i).data('value') !== $array.eq(i+1).data('value')) {
+
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
+
+	function playMove($chosenCards){
+
+		var cardsToPlay = []
+
+		// deckbugger
+
+		for (var i = 0; i < $chosenCards.length; i++) {
+
+			cardsToPlay.push(getCardByName($chosenCards.eq(i).data('name')));
+
+		}
+
+		cardsInPlay.concat(cardsToPlay);
+		console.log(cardsInPlay);
+
+	}
+
+	function removeCardsFromHand($chosenCards){
+
+		debugger;
+
+		for (var i = 0; i < $chosenCards.length; i++) {
+
+			$chosenCards.eq(i)
+
+			for (var j = 0; j < currentPlayer.hand.length; j++) {
+			
+				if($chosenCards.eq(i).data('name') === currentPlayer.hand[j].name){
+
+					playedCardIndex = currentPlayer.hand.indexOf(currentPlayer.hand[j])
+
+					currentPlayer.hand.splice(playedCardIndex, 1);
+
+				}
+
+			}
+
+		}
+
 	}
 
 
-
-
 	initalSetup();
+	// setupRound();
 	playOneRound();
-
-
-
-	
-
-
-
-
 
 
 
