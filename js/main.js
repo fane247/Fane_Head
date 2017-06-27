@@ -258,7 +258,7 @@ $(function () {
 
 		$gameBoardRow.find('.face-up-card');
 
-		debugger;
+		// debugger;
 
 		for (var i = 0; i < cardsInPlay.length; i++) {
 
@@ -522,7 +522,7 @@ $(function () {
 	function setupRound() {
 
 		swapPlayer();
-		debugger;
+		// debugger;
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
@@ -618,7 +618,7 @@ $(function () {
 
 	function verifyChosenCards(event){
 
-		debugger;
+		// debugger;
 		var $chosenCards = event.data.handElement.find('.highlighted')
 		var sameRank = identical($chosenCards);
 		var validMove = false;
@@ -630,11 +630,13 @@ $(function () {
 
 		}
 
+		debugger;
+
 		if (cardsInPlay.length === 0) {
 
 			validMove = true;
 
-		}else if(cardsInPlay[cardsInPlay.length-1] <= parseInt(event.data.handElement.find('.highlighted').data('value'))){
+		}else if(cardsInPlay[cardsInPlay.length-1].value <= parseInt(event.data.handElement.find('.highlighted').data('value'))){
 
 			validMove = true;
 
@@ -681,8 +683,6 @@ $(function () {
 
 		var cardsToPlay = []
 
-		debugger;
-
 		for (var i = 0; i < $chosenCards.length; i++) {
 
 			cardsToPlay.push(getCardByName($chosenCards.eq(i).data('name')));
@@ -715,7 +715,7 @@ $(function () {
 
 		}
 
-		debugger
+		// debugger
 
 	}
 
