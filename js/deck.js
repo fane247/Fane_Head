@@ -1,74 +1,25 @@
-var testDeck = {
+var testDeck = [
 
-	cards: {
+	{name: 'h2',suit: 'h',rank: '2',value: 2},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h6',suit: 'h',rank: '6',value: 6},
+	{name: 'h7',suit: 'h',rank: '7',value: 7},
+	{name: 'h8',suit: 'h',rank: '8',value: 8},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h10',suit: 'h',rank: '10',value: 10},
+	{name: 'hJ',suit: 'h',rank: 'J',value: 11},
+	{name: 'hQ',suit: 'h',rank: 'Q',value: 12},
+	{name: 'hK',suit: 'h',rank: 'K',value: 13},
+	{name: 'hA',suit: 'h',rank: 'A',value: 14},
+	{name: 'c2',suit: 'c',rank: '2',value: 2},
+	{name: 'c3',suit: 'c',rank: '3',value: 3},
+	{name: 'c4',suit: 'c',rank: '4',value: 4},
+	{name: 'c5',suit: 'c',rank: '5',value: 5},
+	{name: 'c6',suit: 'c',rank: '6',value: 6},
 
-		h2:{  
-		  name:'h2',
-		  suit:'h',
-		  value:2
-		},
-		h3:{  
-		  name:'h3',
-		  suit:'h',
-		  value:3
-		},
-		h4:{  
-		  name:'h4',
-		  suit:'h',
-		  value:4
-		},
-		h5:{  
-		  name:'h5',
-		  suit:'h',
-		  value:5
-		},
-		h6:{  
-		  name:'h6',
-		  suit:'h',
-		  value:6
-		},
-		h7:{  
-		  name:'h7',
-		  suit:'h',
-		  value:7
-		},
-		h8:{  
-		  name:'h8',
-		  suit:'h',
-		  value:8
-		},
-		h9:{  
-		  name:'h9',
-		  suit:'h',
-		  value:9
-		},
-		h10:{  
-		  name:'h10',
-		  suit:'h',
-		  value:10
-		},
-		hJ:{  
-		  name:'hJ',
-		  suit:'h',
-		  value:11
-		},
-		hQ:{  
-		  name:'hQ',
-		  suit:'h',
-		  value:12
-		},
-		hK:{  
-		  name:'hK',
-		  suit:'h',
-		  value:13
-		},
-		hA:{  
-		  name:'hA',
-		  suit:'h',
-		  value:14
-		}
-	}
-}
+]
 
 var deck = [
 
