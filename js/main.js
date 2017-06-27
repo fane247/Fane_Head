@@ -38,11 +38,49 @@ $(function () {
 
 	var $p1CardSlots = $('#p1-card-slots');
 	var $p2CardSlots = $('#p2-card-slots');
+	//this might get a bit confusing 
 
 	var $p1SwapCards = $('#p1-swap-cards');
 	var $p2SwapCards = $('#p2-swap-cards');
 
 	var isPlayer1Turn = true;
+	var $errorBox = $('#error-box');
+
+
+	//attempt to refactor functions to make them more dry
+	var player1 = {
+
+		faceDown: p1FaceDown,
+		faceUp: p1FaceUp,
+		hand: p1Hand,
+		cardSlots: p1cardSlots,
+		handElement: $p1HandElement,
+		showCards: $p1ShowCards,
+		ready: $p1Ready,
+		cardSlotsElement: $p1CardSlots,
+		swapCards: $p1SwapCards,
+		playerName: 'p1'
+
+	};
+
+	var player2 = {
+
+		faceDown: p2FaceDown,
+		faceUp: p2FaceUp,
+		hand: p2Hand,
+		cardSlots: p2cardSlots,
+		handElement: $p2HandElement,
+		showCards: $p2ShowCards,
+		ready: $p2Ready,
+		cardSlotsElement: $p2CardSlots,
+		swapCards: $p2SwapCards,
+		playerName: 'p2'
+	
+	};
+
+	var currentPlayer = player1
+
+
 
 	function chooseRandomCard(){
 
@@ -54,7 +92,7 @@ $(function () {
 		var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
 		cardsInPlayIndexs.push(randomNumber);
 
-		 }else while(cardIsTaken){
+		 } else while(cardIsTaken){
 
 			var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
 
@@ -121,37 +159,37 @@ $(function () {
 	}
 
 
-	function swapCardHandToFaceUpP1(cardFromHand, cardFromFaceUp){
+	function swapCardHandToFaceUp(cardFromHand, cardFromFaceUp, playerObject){
 
-		var p1HandCard = getCardByName(cardFromHand);
-		var p1FaceUpCard = getCardByName(cardFromFaceUp);
+		var HandCard = getCardByName(cardFromHand);
+		var FaceUpCard = getCardByName(cardFromFaceUp);
 
-		cardFromHandIndex = p1Hand.indexOf(p1HandCard);
-		cardFromFaceUpIndex = p1FaceUp.indexOf(p1FaceUpCard);
+		cardFromHandIndex = playerObject.hand.indexOf(HandCard);
+		cardFromFaceUpIndex = playerObject.faceUp.indexOf(FaceUpCard);
 
-		p1Hand.splice(cardFromHandIndex,1);
-		p1FaceUp.splice(cardFromFaceUpIndex,1);
+		playerObject.hand.splice(cardFromHandIndex,1);
+		playerObject.faceUp.splice(cardFromFaceUpIndex,1);
 
-		p1Hand.push(p1FaceUpCard);
-		p1FaceUp.push(p1HandCard);
-
-	}
-
-	function swapCardHandToFaceUpP2(cardFromHand, cardFromFaceUp){
-
-		var p2HandCard = getCardByName(cardFromHand);
-		var p2FaceUpCard = getCardByName(cardFromFaceUp);
-
-		cardFromHandIndex = p2Hand.indexOf(p2HandCard);
-		cardFromFaceUpIndex = p2FaceUp.indexOf(p2FaceUpCard);
-
-		p2Hand.splice(cardFromHandIndex,1);
-		p2FaceUp.splice(cardFromFaceUpIndex,1);
-
-		p2Hand.push(p2FaceUpCard);
-		p2FaceUp.push(p2HandCard);
+		playerObject.hand.push(FaceUpCard);
+		playerObject.faceUp.push(HandCard);
 
 	}
+
+	// function swapCardHandToFaceUpP2(cardFromHand, cardFromFaceUp){
+
+	// 	var p2HandCard = getCardByName(cardFromHand);
+	// 	var p2FaceUpCard = getCardByName(cardFromFaceUp);
+
+	// 	cardFromHandIndex = p2Hand.indexOf(p2HandCard);
+	// 	cardFromFaceUpIndex = p2FaceUp.indexOf(p2FaceUpCard);
+
+	// 	p2Hand.splice(cardFromHandIndex,1);
+	// 	p2FaceUp.splice(cardFromFaceUpIndex,1);
+
+	// 	p2Hand.push(p2FaceUpCard);
+	// 	p2FaceUp.push(p2HandCard);
+
+	// }
 
 
 	function generateFaceUpCardImage(cardObject){
@@ -345,9 +383,9 @@ $(function () {
 
 	}
 
-	function p2ToggleShowHand(){
+	function toggleShowHand(){
 
-		var zIndex = $('.p2hand-face-up-card').css('z-index')
+		var zIndex = $('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index')
 
 		if (zIndex === '0') {
 
@@ -363,13 +401,13 @@ $(function () {
 
 	function p2HideHand() {
 
-		$('.p2hand-face-up-card').css('z-index', '-1');
+		$('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index', '-1');
 
 	}
 
 	function p2ShowHand() {
 
-		$('.p2hand-face-up-card').css('z-index', '0');
+		$('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index', '0');
 	}
 
 
@@ -448,18 +486,23 @@ $(function () {
 		
 		updateView();
 
-		p1ToggleShowHand();
-		p2ToggleShowHand();
+		// p1ToggleShowHand();
+		// p2ToggleShowHand();
+		toggleShowHand();
+		swapPlayer();
+		toggleShowHand();
+		swapPlayer();
+		debugger;
 
 	}
 
-	function p1setupRound() {
+	function setupRound() {
 
-		$p1HandElement.on('click', '#p1-show-cards', p1ToggleShowHand);
-		$p1HandElement.on('click', '.p1hand-face-up-card', highlightCard);
-		$p1CardSlots.on('click', '.face-up-card', highlightCard);
-		$p1SwapCards.click({handElement: $p1HandElement, cardsSlots: $p1CardSlots}, verifyCardSwap)
-		$p1Ready.click(p1FinishSetup)
+		currentPlayer.handElement.on('click', '#p1-show-cards', toggleShowHand);
+		currentPlayer.handElement.on('click', '.p1hand-face-up-card', highlightCard);
+		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
+		currentPlayer.swapCards.click({handElement: currentPlayer.handElement, cardsSlots: currentPlayer.cardSlotsElement}, verifyCardSwap)
+		currentPlayer.ready.click(p1FinishSetup)
 
 	}
 
@@ -477,7 +520,7 @@ $(function () {
 
 	function p2setupRound(){
 
-		$p2HandElement.on('click', '#p2-show-cards', p2ToggleShowHand);
+		$p2HandElement.on('click', '#p2-show-cards', toggleShowHand);
 		$p2HandElement.on('click', '.p2hand-face-up-card', highlightCard);
 		$p2CardSlots.on('click', '.face-up-card', highlightCard);
 		$p2SwapCards.click({handElement: $p2HandElement, cardsSlots: $p2CardSlots}, verifyCardSwap);
@@ -512,17 +555,16 @@ $(function () {
 
 			for (var i = 0; i < $selectedHand.length; i++) {
 
-				if (isPlayer1Turn) {
-
-					swapCardHandToFaceUpP1($selectedHand.eq(i).data('name'),$selectedFaceUp.eq(i).data('name'));
-
-				}else {
-
-					swapCardHandToFaceUpP2($selectedHand.eq(i).data('name'),$selectedFaceUp.eq(i).data('name'));
-
-				}
+					swapCardHandToFaceUp($selectedHand.eq(i).data('name'), $selectedFaceUp.eq(i).data('name'), currentPlayer);
 
 			}
+
+		}else{
+
+			// debugger;
+			$errorBox.fadeIn();
+			$errorBox.html('you must swap an equal amount of cards from your hand to your face up cards')
+			setTimeout(fadeOutErrorBox, 3000);
 
 		}
 
@@ -540,11 +582,27 @@ $(function () {
 	function swapPlayer() {
 
 		isPlayer1Turn = isPlayer1Turn ? false : true;
+		currentPlayer = (currentPlayer === player1) ? player2 : player1;
 	}
+
+	function fadeOutErrorBox() {
+
+		$errorBox.fadeOut();
+
+	}
+
+	// function initialiseCurrentPlayerRound(){
+
+	// 	$p2HandElement.on('click', '#p2-show-cards', p2ToggleShowHand);
+	// 	$p2HandElement.on('click', '.p2hand-face-up-card', highlightCard);
+
+	// 	currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', p2sToggleShowHand);
+
+	// }
 
 
 	initalSetup();
-	p1setupRound();
+	setupRound();
 
 	
 

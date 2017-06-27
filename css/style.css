@@ -189,16 +189,15 @@ main {
     left: 300px;
 }
 
-#errorBox{
+#error-box{
 
 	width: 400px;
 	height: 30px;
 	position: absolute;
 	top: 49px;
     left: 297px;
-	border-style: solid;
-	border-width: 1px;
-
+    color: #a82a2a;
+    font-size: 20px
 }
 
 
