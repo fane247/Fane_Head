@@ -37,6 +37,7 @@ main {
 	background-color: white;
 	position: absolute;
 	top: 17px;
+	z-index: 2;
 
 }
 
@@ -92,10 +93,25 @@ main {
 }
 
 
-.face-down-card img {
+.face-down-card {
 
 	height: 153px;
     width: 100px;
+    top: 0px;
+    position: absolute;
+    /*background-color: yellow;*/
+    opacity: 0.4;
+    z-index: 2;
+
+}
+
+img.face-down-card-img {
+
+	height: 153px;
+    width: 100px;
+    top: 0px;
+    position: absolute;
+    z-index: 1;
 
 
 }
@@ -114,6 +130,12 @@ main {
 	position: relative;
 	margin-top: 22px;
 
+}
+
+#p2card-slot-1{
+	position: absolute;
+    top: 0px;
+    left: -2px;
 }
 
 #p2card-slot-2{
@@ -275,6 +297,14 @@ main {
 	margin-left: 24px;
 	top: 27px;
 
+
+}
+
+#p1card-slot-1{
+
+	position: absolute;
+    top: 0px;
+    left: -2px;
 
 }
 

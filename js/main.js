@@ -213,8 +213,8 @@ $(function () {
 		var cardSuitImage = getSuitImage(cardSuit);
 
 		var $faceDown = $('<div class="face-down-card" data-name="' + cardName + ' " data-suit="' + cardSuit + '" data-value="' + cardValue + '">'
-							+'<img src="images/back.jpg">'
-						+'</div>');
+							+'</div>'
+						+'<img class="face-down-card-img" src="images/back.jpg">');
 
 		return $faceDown;
 
@@ -332,11 +332,12 @@ $(function () {
 	function updateFaceDownView() {
 
 		currentPlayer.cardSlotsElement.find('.face-down-card').remove();
+		currentPlayer.cardSlotsElement.find('.face-down-card-img').remove();
 
 		for (var i = 0; i < currentPlayer.faceDown.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(currentPlayer.faceDown[i]);
-			$faceDownCard.addClass('face-down-card');
+			// $faceDownCard.addClass('face-down-card');
 			currentPlayer.cardSlots[i].append($faceDownCard);
 
 		}
@@ -346,21 +347,23 @@ $(function () {
 	function updateFaceDownViewAll() {
 
 		player1.cardSlotsElement.find('.face-down-card').remove();
+		player1.cardSlotsElement.find('.face-down-card-img').remove();
 
 		for (var i = 0; i < player1.faceUp.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(player1.faceUp[i]);
-			$faceDownCard.addClass('face-down-card');
+			// $faceDownCard.addClass('face-down-card');
 			player1.cardSlots[i].append($faceDownCard);
 
 		}
 
 		player2.cardSlotsElement.find('.face-down-card').remove();
+		player2.cardSlotsElement.find('.face-down-card-img').remove();
 
 		for (var i = 0; i < player2.faceUp.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(player2.faceUp[i]);
-			$faceDownCard.addClass('face-down-card');
+			// $faceDownCard.addClass('face-down-card');
 			player2.cardSlots[i].append($faceDownCard);
 
 		}
