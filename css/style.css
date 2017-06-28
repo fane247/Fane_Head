@@ -153,8 +153,6 @@ img.face-down-card-img {
 
 #p2-hand{
 
-    border-style: solid;
-    border-width: 1px;
     height: 159px;
     width: 558px;
     display: inline-block;
@@ -205,8 +203,6 @@ img.face-down-card-img {
  	height: 154px;
     width: 258px;
     position: absolute;
-    border-style: solid;
-    border-width: 1px;
     top: 295px;
     left: 300px;
 }
@@ -240,8 +236,6 @@ img.face-down-card-img {
 
 #cards-in-play{
 
-	border-style: solid;
-	border-width: 1px;
 	height: 153px;
     width: 100px;
     position: absolute;
@@ -276,16 +270,6 @@ img.face-down-card-img {
 
 }
 
-#p1-hand {
-
-	border-style: solid;
-	border-width: 1px;
-	height: 159px;
-    width: 558px;
-    position: absolute;
-    left: 446px;
-    top: 0px;
-}
 
 #p1board-cards{
 
@@ -346,15 +330,13 @@ img.face-down-card-img {
 
 #p1-hand{
 
-    border-style: solid;
-    border-width: 1px;
     height: 159px;
     width: 558px;
     display: inline-block;
     position: absolute;
     left: 426px;
     top: 0;
-    /*overflow: scroll;*/
+    
 }
 
 .p1hand-card {

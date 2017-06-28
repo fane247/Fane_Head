@@ -485,8 +485,6 @@ $(function () {
 		var handTopOffset = 17;
 		var cardCount = 0; 
 
-
-
 		for (var i = 0; i < currentPlayer.hand.length; i++) {
 
 			if(cardCount > 20) {
@@ -692,7 +690,17 @@ $(function () {
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
+		
+		if (currentPlayer.faceUp.length !== 0 && currentPlayer.hand.length === 0) {
+
+			currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
+
+		}else {
+
+			currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCardsFaceDown);
+
+		}
+		
 
 		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
 		$('.card-in-play').click(pickUpCardsInPlay);
@@ -703,12 +711,49 @@ $(function () {
 
 		}
 
-		if (currentPlayer.faceUp.length === 0) {
+		if (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0) {
 
 			currentPlayer.cardSlotsElement.on('click', '.face-down-card', highlightCard);
 
 		}
 
+
+
+	}
+
+	function verifyChosenCardsFaceDown(event){
+
+		//if currentPlayer.faceUp.length === 0
+		//add facedown card to hand and add cards in play to hand
+
+		debugger
+
+		var $chosenCards = event.data.playerRow.find('.highlighted');
+
+		if (cardsInPlay.length === 0) {
+
+			playMove($chosenCards);
+			removeCardsFromFaceDown($chosenCards);
+			updateView();
+			currentPlayerRemoveListeners();
+
+
+		}else if(cardsInPlay[cardsInPlay.length-1].value >= parseInt($chosenCards.data('value'))){
+
+			playMove($chosenCards);
+			pickUpCardsInPlay();
+			removeCardsFromFaceDown($chosenCards);
+			updateView();
+			currentPlayerRemoveListeners();
+
+		}else{
+
+			playMove($chosenCards);
+			removeCardsFromFaceDown($chosenCards);
+			updateView();
+			currentPlayerRemoveListeners();
+
+		}
 
 
 	}
@@ -763,7 +808,6 @@ $(function () {
 
 			}
 			
-
 			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
 				drawOneCard();
 			}
@@ -797,7 +841,6 @@ $(function () {
 		var cardsToPlay = []
 
 		for (var i = 0; i < $chosenCards.length; i++) {
-
 
 
 			var cardName = $chosenCards.eq(i).data('name');
@@ -914,8 +957,13 @@ $(function () {
 
 		//so for some reason i need to call another function to get currentPlayer.hand and cardsInPlay...
 		pickUpCards();
-		updateView();
-		currentPlayerRemoveListeners();
+
+		if (currentPlayer.faceUp.length !== 0) {
+
+			updateView();
+			currentPlayerRemoveListeners();
+		}
+		
 		
 	}
 
