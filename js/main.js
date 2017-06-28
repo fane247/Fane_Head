@@ -715,7 +715,7 @@ $(function () {
 
 	function verifyChosenCards(event){
 
-		if(currentPlayer.faceUp.length === 0){
+		if(currentPlayer.hand.length === 0){
 
 			debugger
 
@@ -745,7 +745,24 @@ $(function () {
 			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
 		}
 
-		if (validMove && sameRank) {
+		//if a facedown  card is played errormessage gets assigned by accident
+
+		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
+
+			playMove($chosenCards);
+			removeCardsFromFaceDown($chosenCards);
+
+			if (!validMove) {
+
+				pickUpCards();
+
+			}
+
+			updateView();
+			currentPlayerRemoveListeners();
+
+
+		} else if (validMove && sameRank) {
 
 			playMove($chosenCards);
 
@@ -757,21 +774,24 @@ $(function () {
 
 				removeCardsFromFaceUp($chosenCards);
 
-			}else if(currentPlayer.faceUp.length === 0){
-
-				removeCardsFromFaceDown($chosenCards);
-
 			}
+
+			// }else if(currentPlayer.faceUp.length === 0){
+
+			// 	removeCardsFromFaceDown($chosenCards);
+
+			// }
 			
 
 			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
+
 				drawOneCard();
 			}
 
 			updateView();
 			currentPlayerRemoveListeners();
 
-		}else {
+		} else {
 
 			displayError(errorMessage)
 
