@@ -212,7 +212,7 @@ $(function () {
 		var cardValue = cardObject.value.toString();
 		var cardSuitImage = getSuitImage(cardSuit);
 
-		var $faceDown = $('<div class="face-down-card" data-name="' + cardName + ' " data-suit="' + cardSuit + '" data-value="' + cardValue + '">'
+		var $faceDown = $('<div class="face-down-card" data-name="' + cardName + '" data-suit="' + cardSuit + '" data-value="' + cardValue + '">'
 							+'</div>'
 						+'<img class="face-down-card-img" src="images/back.jpg">');
 
@@ -319,20 +319,28 @@ $(function () {
 
 		currentPlayer.cardSlotsElement.find('.face-up-card').remove();
 
-		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
+		if (currentPlayer.faceUp.length !== 0) {
 
-			var $faceUpCard = generateFaceUpCardImage(currentPlayer.faceUp[i]);
-			$faceUpCard.addClass('face-up-card');
-			currentPlayer.cardSlots[i].append($faceUpCard);
+			for (var i = 0; i < currentPlayer.faceUp.length; i++) {
 
+				var $faceUpCard = generateFaceUpCardImage(currentPlayer.faceUp[i]);
+				$faceUpCard.addClass('face-up-card');
+				currentPlayer.cardSlots[i].append($faceUpCard);
+
+			}
 		}
-
 	}
 
 	function updateFaceDownView() {
 
 		currentPlayer.cardSlotsElement.find('.face-down-card').remove();
 		currentPlayer.cardSlotsElement.find('.face-down-card-img').remove();
+
+		if (currentPlayer.faceUp.length === 0) {
+
+			debugger;
+
+		}
 
 		for (var i = 0; i < currentPlayer.faceDown.length; i++) {
 
@@ -584,7 +592,7 @@ $(function () {
 	function highlightCard() {
 
 		$(this).toggleClass('highlighted');
-		// body...
+
 	}
 
 	function initalSetup() {
@@ -707,6 +715,11 @@ $(function () {
 
 	function verifyChosenCards(event){
 
+		if(currentPlayer.faceUp.length === 0){
+
+			debugger
+
+		}
 
 		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
@@ -744,13 +757,11 @@ $(function () {
 
 				removeCardsFromFaceUp($chosenCards);
 
+			}else if(currentPlayer.faceUp.length === 0){
+
+				removeCardsFromFaceDown($chosenCards);
+
 			}
-
-			// }else if(currentPlayer.faceUp !== 0){
-
-			// 	removeCardsFromFaceDown($chosenCards);
-
-			// }
 			
 
 			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
@@ -825,6 +836,12 @@ $(function () {
 
 	function removeCardsFromFaceUp($chosenCards){
 
+		if (currentPlayer.faceUp.length === 0 ) {
+
+			debugger
+
+		}
+
 		for (var i = 0; i < $chosenCards.length; i++) {
 
 			$chosenCards.eq(i)
@@ -845,7 +862,7 @@ $(function () {
 
 	}
 
-	function removeCardsFromDownUp($chosenCards){
+	function removeCardsFromFaceDown($chosenCards){
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
