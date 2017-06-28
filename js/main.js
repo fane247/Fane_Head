@@ -690,16 +690,7 @@ $(function () {
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		
-		if (currentPlayer.faceUp.length !== 0 && currentPlayer.hand.length === 0) {
-
-			currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
-
-		}else {
-
-			currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCardsFaceDown);
-
-		}
+		currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
 		
 
 		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
@@ -721,12 +712,12 @@ $(function () {
 
 	}
 
-	function verifyChosenCardsFaceDown(event){
+	function verifyFaceDownCards(event){
 
 		//if currentPlayer.faceUp.length === 0
 		//add facedown card to hand and add cards in play to hand
 
-		debugger
+		// debugger
 
 		var $chosenCards = event.data.playerRow.find('.highlighted');
 
@@ -734,48 +725,29 @@ $(function () {
 
 			playMove($chosenCards);
 			removeCardsFromFaceDown($chosenCards);
-			updateView();
-			currentPlayerRemoveListeners();
-
 
 		}else if(cardsInPlay[cardsInPlay.length-1].value >= parseInt($chosenCards.data('value'))){
 
 			playMove($chosenCards);
 			pickUpCardsInPlay();
 			removeCardsFromFaceDown($chosenCards);
-			updateView();
-			currentPlayerRemoveListeners();
 
 		}else{
 
 			playMove($chosenCards);
 			removeCardsFromFaceDown($chosenCards);
-			updateView();
-			currentPlayerRemoveListeners();
 
 		}
+
+		updateView();
+		currentPlayerRemoveListeners();
 
 
 	}
 
-	function verifyChosenCards(event){
+	function isValidMove() {
 
-		if(currentPlayer.faceUp.length === 0){
-
-			debugger
-
-		}
-
-		var $chosenCards = event.data.playerRow.find('.highlighted')
-		var sameRank = identical($chosenCards);
-		var validMove = false;
-		var errorMessage = '';
-
-		if (!sameRank) {
-
-			errorMessage = 'you can only play more than one card of the same rank!';
-
-		}
+		validMove = false;
 
 		if (cardsInPlay.length === 0) {
 
@@ -785,7 +757,36 @@ $(function () {
 
 			validMove = true;
 
-		}else {
+		}
+
+		return validMove;
+		
+	}
+
+	function isOnFaceDownCards(){
+
+		return	currentPlayer.faceUp.length === 0;
+	}
+
+	function hasNoCardsInHand(){
+
+		return currentPlayer.hand.length === 0;
+	}
+
+	function verifyNonFaceDownCards(event){
+
+		var $chosenCards = event.data.playerRow.find('.highlighted')
+		var sameRank = identical($chosenCards);
+		var validMove = isValidMove();
+		var errorMessage = '';
+
+		if (!sameRank) {
+
+			errorMessage = 'you can only play more than one card of the same rank!';
+
+		}
+
+		if(!validMove) {
 
 			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
 		}
@@ -794,15 +795,15 @@ $(function () {
 
 			playMove($chosenCards);
 
-			if (currentPlayer.hand.length !== 0) {
+			if (!hasNoCardsInHand()) {
 				
 				removeCardsFromHand($chosenCards);
 
-			}else if(currentPlayer.faceUp.length !== 0){
+			}else if(!isOnFaceDownCards() && hasNoCardsInHand()){
 
 				removeCardsFromFaceUp($chosenCards);
 
-			}else if(currentPlayer.faceUp.length === 0){
+			}else if(isOnFaceDownCards() && hasNoCardsInHand()){
 
 				removeCardsFromFaceDown($chosenCards);
 
@@ -820,6 +821,29 @@ $(function () {
 			displayError(errorMessage)
 
 		}
+	}
+
+	function verifyChosenCards(event){
+
+		if(currentPlayer.hand.length === 0){
+
+			debugger
+
+		}
+
+
+		if(isOnFaceDownCards() && hasNoCardsInHand()){
+
+			verifyFaceDownCards(event);
+
+		}else{
+			
+			verifyNonFaceDownCards(event);
+
+		}
+
+
+
 
 	}
 
@@ -957,12 +981,9 @@ $(function () {
 
 		//so for some reason i need to call another function to get currentPlayer.hand and cardsInPlay...
 		pickUpCards();
-
-		if (currentPlayer.faceUp.length !== 0) {
-
-			updateView();
-			currentPlayerRemoveListeners();
-		}
+		updateView();
+		currentPlayerRemoveListeners();
+	
 		
 		
 	}
