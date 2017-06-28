@@ -311,11 +311,11 @@ $(function () {
 
 		currentPlayer.cardSlotsElement.find('.face-up-card').remove();
 
-		if (currentPlayer.faceUp.length > 0) {
-			console.log(currentPlayer.faceUp);
-		} else {
-			console.log("undefined");
-		}
+		// if (currentPlayer.faceUp.length > 0) {
+		// 	console.log(currentPlayer.faceUp);
+		// } else {
+		// 	console.log("undefined");
+		// }
 
 		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
 
@@ -764,8 +764,8 @@ $(function () {
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards);
 
-		$gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
-
+		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
+		$('.card-in-play').click(pickUpCardsInPlay);
 
 	}
 
@@ -894,7 +894,6 @@ $(function () {
 
 		//so for some reason i need to call another function to get currentPlayer.hand and cardsInPlay...
 		pickUpCards();
-		debugger
 		updateView();
 		currentPlayerRemoveListeners();
 		
@@ -906,13 +905,6 @@ $(function () {
 		cardsInPlay = [];
 
 	}
-
-	function sortNumber(a,b) {
-    	
-    	return a - b;
-
-	}
-
 
 	initalSetup();
 	setupRound();
