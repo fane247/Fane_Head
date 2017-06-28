@@ -1,0 +1,1 @@
+//add current player indicator (change text color to yellow. use .current-player class)

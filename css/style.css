@@ -6,6 +6,7 @@ main {
     margin: 0 auto;
     position: relative;
     background: linear-gradient(#026406, #92d361);
+    font-family: 'Gill Sans';
 }	
 
 #p2-name{
@@ -14,6 +15,13 @@ main {
 	margin-left: 24px;
 	margin-top: 0px;
 	position: absolute;
+	background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 
 }
 
@@ -23,7 +31,7 @@ main {
 	width: 300px;
 	display: inline-block;
 	position: relative;
-	margin-top: 26px;
+	margin-top: 40px;
 	margin-left: 24px;
 
 }
@@ -153,8 +161,6 @@ img.face-down-card-img {
 
 #p2-hand{
 
-    border-style: solid;
-    border-width: 1px;
     height: 159px;
     width: 558px;
     display: inline-block;
@@ -175,9 +181,14 @@ img.face-down-card-img {
 	top: -27px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
 
+}
+
+#p1-show-cards:active {
+  background-color: red;
 }
 
 #p2-ready {
@@ -187,8 +198,10 @@ img.face-down-card-img {
 	left: 110px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
+
 
 }
 
@@ -205,8 +218,6 @@ img.face-down-card-img {
  	height: 154px;
     width: 258px;
     position: absolute;
-    border-style: solid;
-    border-width: 1px;
     top: 295px;
     left: 300px;
 }
@@ -218,8 +229,8 @@ img.face-down-card-img {
 	position: absolute;
 	top: 49px;
     left: 297px;
-    color: #a82a2a;
-    font-size: 20px
+    color: #ad1c13;
+    font-size: 26px
 }
 
 
@@ -238,10 +249,14 @@ img.face-down-card-img {
 
 }
 
+.current-player{
+
+	color: black;
+    background: yellow;
+}
+
 #cards-in-play{
 
-	border-style: solid;
-	border-width: 1px;
 	height: 153px;
     width: 100px;
     position: absolute;
@@ -278,8 +293,6 @@ img.face-down-card-img {
 
 #p1-hand {
 
-	border-style: solid;
-	border-width: 1px;
 	height: 159px;
     width: 558px;
     position: absolute;
@@ -296,8 +309,7 @@ img.face-down-card-img {
 	margin-bottom: 26px;
 	margin-left: 24px;
 	top: 27px;
-
-
+	margin-top: 10px;
 }
 
 #p1card-slot-1{
@@ -329,6 +341,13 @@ img.face-down-card-img {
     margin-left: 24px;
     margin-top: 0px;
     position: absolute;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 .p1hand-face-up-card{
@@ -344,18 +363,6 @@ img.face-down-card-img {
 
 }
 
-#p1-hand{
-
-    border-style: solid;
-    border-width: 1px;
-    height: 159px;
-    width: 558px;
-    display: inline-block;
-    position: absolute;
-    left: 426px;
-    top: 0;
-    /*overflow: scroll;*/
-}
 
 .p1hand-card {
 
@@ -368,8 +375,11 @@ img.face-down-card-img {
 	top: -27px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
 
 }
 
@@ -385,8 +395,9 @@ img.face-down-card-img {
 	left: 110px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
 
 }
 
@@ -397,8 +408,9 @@ img.face-down-card-img {
 	left: 220px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
 
 }
 
@@ -409,8 +421,9 @@ img.face-down-card-img {
 	left: 220px;
     height: 23px;
     width: 100px;
-    border-style: solid;
-    border-width: 1px;
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
 
 }
 
