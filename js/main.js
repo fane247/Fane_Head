@@ -204,9 +204,8 @@ $(function () {
 		return $faceUpCard;
 	}
 
-	function generateFaceDownCardImage(cardObject){
+	function generateFaceDownCard(cardObject){
 
-		//possibly not needed and can be replaces with a function that creates a faceup card when the 
 
 		var cardName = cardObject.name;
 		var cardSuit = cardObject.suit;
@@ -234,6 +233,7 @@ $(function () {
 		
 		updateGameBoardRow();
 		updateHandView();
+		updateFaceDownView();
 		updateFaceUpView();
 		hideHands();
 		
@@ -243,6 +243,7 @@ $(function () {
 
 		updateGameBoardRow();
 		updateHandViewAll();
+		updateFaceDownViewAll();
 		updateFaceUpViewAll();
 		hideHands();
 
@@ -319,12 +320,6 @@ $(function () {
 
 		currentPlayer.cardSlotsElement.find('.face-up-card').remove();
 
-		// if (currentPlayer.faceUp.length > 0) {
-		// 	console.log(currentPlayer.faceUp);
-		// } else {
-		// 	console.log("undefined");
-		// }
-
 		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
 
 			var $faceUpCard = generateFaceUpCardImage(currentPlayer.faceUp[i]);
@@ -334,6 +329,48 @@ $(function () {
 		}
 
 	}
+
+	function updateFaceDownView() {
+
+		currentPlayer.cardSlotsElement.find('.face-down-card').remove();
+
+		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
+
+			var $faceDownCard = generateFaceDownCard(currentPlayer.faceUp[i]);
+			$faceDownCard.addClass('face-down-card');
+			currentPlayer.cardSlots[i].append($faceDownCard);
+
+		}
+
+	}
+
+	function updateFaceDownViewAll() {
+
+		player1.cardSlotsElement.find('.face-down-card').remove();
+
+		for (var i = 0; i < player1.faceUp.length; i++) {
+
+			var $faceDownCard = generateFaceDownCard(player1.faceUp[i]);
+			$faceDownCard.addClass('face-down-card');
+			player1.cardSlots[i].append($faceDownCard);
+
+		}
+
+		player2.cardSlotsElement.find('.face-down-card').remove();
+
+		for (var i = 0; i < player2.faceUp.length; i++) {
+
+			var $faceDownCard = generateFaceDownCard(player2.faceUp[i]);
+			$faceDownCard.addClass('face-down-card');
+			player2.cardSlots[i].append($faceDownCard);
+
+		}
+
+
+	}
+
+
+
 
 	function updateHandViewAll(){
 
@@ -478,131 +515,6 @@ $(function () {
 		}
 
 	}
-
-	// function updateP2HandView(){
-
-	// 	$p2HandElement.find('.card-hand-container').remove();
-
-	// 	var handLeftOffset = 0;
-	// 	var handTopOffset = 17;
-	// 	var cardCount = 0; 
-
-
-
-	// 	for (var i = 0; i < p2Hand.length; i++) {
-
-	// 		if(cardCount > 20) {
-
-	// 			//move next cards to the next row
-	// 			handLeftOffset = 0;
-	// 			handTopOffset += 36;
-	// 			cardCount = 0;
-	// 		}
-
-	// 		var $handCardContainer = generateHandCardContainer();
-
-	// 		var $faceDown = $('<div class="hand-face-down-card">'
-	// 							+'<img src="images/back.jpg">'
-	// 						+'</div>');
-
-	// 		var $faceUpCard  = generateFaceUpCardImage(p2Hand[i]);
-
-	// 		$faceUpCard.addClass('p2hand-face-up-card');
-
-	// 		$handCardContainer.append($faceDown).append($faceUpCard);
-
-	// 		$handCardContainer.css('top', handTopOffset + 'px');
-
-	// 		if (cardCount !==0) {
-
-	// 			handLeftOffset += 21;
-				
-	// 		}
-
-	// 		$handCardContainer.css('left',handLeftOffset + 'px');
-
-	// 		$p2HandElement.append($handCardContainer);
-
-	// 		cardCount++;
-	// 	}
-
-	// }
-
-	// function updateP1View() {
-
-	// 	updateP1FaceUpView();
-	// 	updateP1HandView();
-		
-	// }
-
-
-
-	// function updateP1FaceUpView(){
-
-	// 	$p1CardSlots.find('.face-up-card').remove();
-
-	// 	for (var i = 0; i < p1FaceUp.length; i++) {
-
-
-	// 		if(typeof p1FaceUp[i] === 'undefined'){
-
-	// 			debugger;
-
-	// 		}
-
-	// 		var $faceUpCard = generateFaceUpCardImage(p1FaceUp[i]);
-	// 		$faceUpCard.addClass('face-up-card');
-	// 		p1cardSlots[i].append($faceUpCard);
-	// 	}
-
-	// }
-
-	// function updateP1HandView(){
-
-	// 	$p1HandElement.find('.card-hand-container').remove();
-
-	// 	var handLeftOffset = 0;
-	// 	var handTopOffset = 17;
-	// 	var cardCount = 0; 
-
-	// 	for (var i = 0; i < p1Hand.length; i++) {
-
-	// 		if(cardCount > 20) {
-
-	// 			//move next cards to the next row
-	// 			handLeftOffset = 0;
-	// 			handTopOffset += 36;
-	// 			cardCount = 0;
-	// 		}
-
-	// 		var $handCardContainer = generateHandCardContainer();
-
-	// 		var $faceDown = $('<div class="hand-face-down-card">'
-	// 							+'<img src="images/back.jpg">'
-	// 						+'</div>');
-
-	// 		var $faceUpCard  = generateFaceUpCardImage(p1Hand[i]);
-
-	// 		$faceUpCard.addClass('p1hand-face-up-card');
-
-	// 		$handCardContainer.append($faceDown).append($faceUpCard);
-
-	// 		$handCardContainer.css('top', handTopOffset + 'px');
-
-	// 		if (cardCount !==0) {
-
-	// 			handLeftOffset += 21;
-				
-	// 		}
-
-	// 		$handCardContainer.css('left',handLeftOffset + 'px');
-
-	// 		$p1HandElement.append($handCardContainer);
-
-	// 		cardCount++;
-	// 	}
-
-	// }
 
 	function toggleShowHand(){
 
@@ -781,6 +693,14 @@ $(function () {
 
 		}
 
+		if (currentPlayer.faceUp.length === 0) {
+
+			currentPlayer.cardSlotsElement.on('click', '.face-down-card', highlightCard);
+
+		}
+
+
+
 	}
 
 	function verifyChosenCards(event){
@@ -814,13 +734,18 @@ $(function () {
 
 			playMove($chosenCards);
 
-			if (currentPlayer.hand.length === 0) {
+			if (currentPlayer.hand.length !== 0) {
+				
+				removeCardsFromHand($chosenCards);
+
+			}else if(currentPlayer.faceUp.length !== 0){
 
 				removeCardsFromFaceUp($chosenCards);
 
-			}else{
+			}else if(currentPlayer.faceUp === 0){
 
-				removeCardsFromHand($chosenCards);
+				removeCardsFromFaceDown($chosenCards);
+
 			}
 			
 
@@ -907,6 +832,28 @@ $(function () {
 					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceUp[j])
 
 					currentPlayer.faceUp.splice(playedCardIndex, 1);
+
+				}
+
+			}
+
+		}
+
+	}
+
+	function removeCardsFromFaceUp($chosenCards){
+
+		for (var i = 0; i < $chosenCards.length; i++) {
+
+			$chosenCards.eq(i)
+
+			for (var j = 0; j < currentPlayer.faceDown.length; j++) {
+			
+				if($chosenCards.eq(i).data('name') === currentPlayer.faceDown[j].name){
+
+					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceDown[j])
+
+					currentPlayer.faceDown.splice(playedCardIndex, 1);
 
 				}
 
