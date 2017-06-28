@@ -76,7 +76,7 @@ $(function () {
 
 		while(cardIsTaken){
 
-			var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
+			var randomNumber = Math.floor(Math.random() * (deck.length - 0)) + 0;
 
 			if (!chosenDeckIndexs.includes(randomNumber)) {
 
@@ -145,7 +145,7 @@ $(function () {
 
 	function swapCardHandToFaceUp(cardFromHand, cardFromFaceUp, playerObject){
 
-		debugger;
+		// debugger;
 
 		var HandCard = getCardByName(cardFromHand);
 		var FaceUpCard = getCardByName(cardFromFaceUp);
@@ -252,7 +252,7 @@ $(function () {
 
 		$gameBoardRow.find('.card-in-play').remove();
 
-		if (chosenDeckIndexs.length === 52) {
+		if (chosenDeckIndexs.length === deck.length) {
 
 			$('#deck').remove();
 
@@ -785,7 +785,6 @@ $(function () {
 
 	function verifyChosenCards(event){
 
-		debugger
 
 		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
@@ -814,9 +813,18 @@ $(function () {
 		if (validMove && sameRank) {
 
 			playMove($chosenCards);
-			removeCardsFromHand($chosenCards);
 
-			while(currentPlayer.hand.length < 3){
+			if (currentPlayer.hand.length === 0) {
+
+				removeCardsFromFaceUp($chosenCards);
+
+			}else{
+
+				removeCardsFromHand($chosenCards);
+			}
+			
+
+			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
 				drawOneCard();
 			}
 
@@ -886,9 +894,33 @@ $(function () {
 
 	}
 
+	function removeCardsFromFaceUp($chosenCards){
+
+		for (var i = 0; i < $chosenCards.length; i++) {
+
+			$chosenCards.eq(i)
+
+			for (var j = 0; j < currentPlayer.faceUp.length; j++) {
+			
+				if($chosenCards.eq(i).data('name') === currentPlayer.faceUp[j].name){
+
+					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceUp[j])
+
+					currentPlayer.faceUp.splice(playedCardIndex, 1);
+
+				}
+
+			}
+
+		}
+
+	}
+
 	function drawOneCard() {
 
-		if (chosenDeckIndexs.length !== 52) {
+		debugger
+
+		if (chosenDeckIndexs.length < deck.length) {
 
 			currentPlayer.hand.push(deck[chooseRandomCard()]);
 

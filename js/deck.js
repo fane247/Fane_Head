@@ -1,4 +1,4 @@
-var testDeck = [
+var deck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
@@ -17,11 +17,11 @@ var testDeck = [
 	{name: 'c3',suit: 'c',rank: '3',value: 3},
 	{name: 'c4',suit: 'c',rank: '4',value: 4},
 	{name: 'c5',suit: 'c',rank: '5',value: 5},
-	{name: 'c6',suit: 'c',rank: '6',value: 6},
+	{name: 'c6',suit: 'c',rank: '6',value: 6}
 
 ]
 
-var deck = [
+var fullDeck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
