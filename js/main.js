@@ -33,7 +33,8 @@ $(function () {
 		ready: $('#p1-ready'),
 		cardSlotsElement: $('#p1-card-slots'),
 		swapCards: $('#p1-swap-cards'),
-		playerName: 'p1'
+		playerName: 'p1',
+		playerRow: $('#p1-row')
 
 	};
 
@@ -48,7 +49,8 @@ $(function () {
 		ready: $('#p2-ready'),
 		cardSlotsElement: $('#p2-card-slots'),
 		swapCards: $('#p2-swap-cards'),
-		playerName: 'p2'
+		playerName: 'p2',
+		playerRow: $('#p2-row')
 	
 	};
 
@@ -249,8 +251,6 @@ $(function () {
 	function updateGameBoardRow(){
 
 		$gameBoardRow.find('.card-in-play').remove();
-
-		debugger
 
 		if (chosenDeckIndexs.length === 52) {
 
@@ -770,7 +770,7 @@ $(function () {
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards);
+		currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
 
 		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
 		$('.card-in-play').click(pickUpCardsInPlay);
@@ -785,7 +785,9 @@ $(function () {
 
 	function verifyChosenCards(event){
 
-		var $chosenCards = event.data.handElement.find('.highlighted')
+		debugger
+
+		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
 		var validMove = false;
 		var errorMessage = '';
@@ -800,7 +802,7 @@ $(function () {
 
 			validMove = true;
 
-		}else if(cardsInPlay[cardsInPlay.length-1].value <= parseInt(event.data.handElement.find('.highlighted').data('value'))){
+		}else if(cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))){
 
 			validMove = true;
 
@@ -886,7 +888,7 @@ $(function () {
 
 	function drawOneCard() {
 
-		if (chosenDeckIndexs.length !=== 52) {
+		if (chosenDeckIndexs.length !== 52) {
 
 			currentPlayer.hand.push(deck[chooseRandomCard()]);
 
