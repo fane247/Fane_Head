@@ -96,7 +96,6 @@ $(function () {
 	function chooseFaceDownCards(){
 
 		player1.faceDown.push(deck[chooseRandomCard()]);
-
 		player1.faceDown.push(deck[chooseRandomCard()]);
 		player1.faceDown.push(deck[chooseRandomCard()]);
 
@@ -334,9 +333,9 @@ $(function () {
 
 		currentPlayer.cardSlotsElement.find('.face-down-card').remove();
 
-		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
+		for (var i = 0; i < currentPlayer.faceDown.length; i++) {
 
-			var $faceDownCard = generateFaceDownCard(currentPlayer.faceUp[i]);
+			var $faceDownCard = generateFaceDownCard(currentPlayer.faceDown[i]);
 			$faceDownCard.addClass('face-down-card');
 			currentPlayer.cardSlots[i].append($faceDownCard);
 
@@ -742,11 +741,13 @@ $(function () {
 
 				removeCardsFromFaceUp($chosenCards);
 
-			}else if(currentPlayer.faceUp === 0){
-
-				removeCardsFromFaceDown($chosenCards);
-
 			}
+
+			// }else if(currentPlayer.faceUp !== 0){
+
+			// 	removeCardsFromFaceDown($chosenCards);
+
+			// }
 			
 
 			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
@@ -841,7 +842,7 @@ $(function () {
 
 	}
 
-	function removeCardsFromFaceUp($chosenCards){
+	function removeCardsFromDownUp($chosenCards){
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
