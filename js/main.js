@@ -250,6 +250,14 @@ $(function () {
 
 		$gameBoardRow.find('.card-in-play').remove();
 
+		debugger
+
+		if (chosenDeckIndexs.length === 52) {
+
+			$('#deck').remove();
+
+		}
+
 		if (cardsInPlay.length!==0) {
 
 			for (var i = 0; i < cardsInPlay.length; i++) {
@@ -767,6 +775,12 @@ $(function () {
 		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
 		$('.card-in-play').click(pickUpCardsInPlay);
 
+		if (currentPlayer.hand.length === 0) {
+
+			currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
+
+		}
+
 	}
 
 	function verifyChosenCards(event){
@@ -872,7 +886,11 @@ $(function () {
 
 	function drawOneCard() {
 
-		currentPlayer.hand.push(deck[chooseRandomCard()]);
+		if (chosenDeckIndexs.length !=== 52) {
+
+			currentPlayer.hand.push(deck[chooseRandomCard()]);
+
+		}
 	
 	}
 
