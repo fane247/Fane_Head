@@ -7,7 +7,7 @@ $(function () {
 
 	var $errorBox = $('#error-box');
 
-	var roundCounter = 3; //set this to 0 when playing from the begining 
+	var roundCounter = 0; //set this to 0 when playing from the begining 
 
 	var $cardsInPlayElement = $('#cards-in-play');
 	var cardsInPlay = [];
@@ -54,42 +54,47 @@ $(function () {
 
 	var currentPlayer = player2;
 
+	var chosenDeckIndexs = [];
+
+	
+
 	function chooseRandomCard(){
 
-		// var cardIsTaken = true;
-		// var randomNumber = 0;
+		// 	var initalRandomNumber = Math.floor(Math.random() * (deck.length -1)) + 0
 
-		// if (cardsInPlayIndexs.length === 0) {
+		// var randomNumber = initalRandomNumber === deck.length ? deck.length -1 : initalRandomNumber;
 
-		var initalRandomNumber = Math.floor(Math.random() * (deck.length -1)) + 0
+		// chosenDeckIndexs.push(randomNumber);
 
-		var randomNumber = initalRandomNumber === deck.length ? deck.length -1 : initalRandomNumber;
+		// deck.splice(deck.indexOf(deck[randomNumber]), 1);
+
+		var cardIsTaken = true;
+		var randomNumber = 0;
 
 
-		deck.splice(deck.indexOf(deck[initalRandomNumber]), 1);
+		while(cardIsTaken){
 
+			var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
 
-		// cardsInPlayIndexs.push(randomNumber);
+			if (!chosenDeckIndexs.includes(randomNumber)) {
 
-		//  } else while(cardIsTaken){
+				chosenDeckIndexs.push(randomNumber);
+				cardIsTaken=false;
+			}
 
-		// 	var randomNumber = Math.floor(Math.random() * (52 - 0)) + 0;
-
-		// 	if (!cardsInPlayIndexs.includes(randomNumber)) {
-
-		// 		cardsInPlayIndexs.push(randomNumber);
-		// 		cardIsTaken=false;
-		// 	}
-
-		// }
+		}
 
 		return randomNumber;
 
 	}
 
+
+
+
 	function chooseFaceDownCards(){
 
 		player1.faceDown.push(deck[chooseRandomCard()]);
+
 		player1.faceDown.push(deck[chooseRandomCard()]);
 		player1.faceDown.push(deck[chooseRandomCard()]);
 
@@ -137,6 +142,8 @@ $(function () {
 
 
 	function swapCardHandToFaceUp(cardFromHand, cardFromFaceUp, playerObject){
+
+		debugger;
 
 		var HandCard = getCardByName(cardFromHand);
 		var FaceUpCard = getCardByName(cardFromFaceUp);
@@ -219,17 +226,24 @@ $(function () {
 
 	}
 
-	//need to redo view functions to only use player objects
+
 
 	function updateView() {
 		
 		updateGameBoardRow();
-		// updateP2View();
-		// updateP1View();
 		updateHandView();
 		updateFaceUpView();
 		hideHands();
 		
+	}
+
+	function updateViewAll() {
+
+		updateGameBoardRow();
+		updateHandViewAll();
+		updateFaceUpViewAll();
+		hideHands();
+
 	}
 
 	function updateGameBoardRow(){
@@ -237,8 +251,6 @@ $(function () {
 		$gameBoardRow.find('.card-in-play').remove();
 
 		if (cardsInPlay.length!==0) {
-
-			debugger
 
 			for (var i = 0; i < cardsInPlay.length; i++) {
 
@@ -257,11 +269,53 @@ $(function () {
 
 	// }
 
+	function updateFaceUpViewAll() {
+
+		player1.cardSlotsElement.find('.face-up-card').remove();
+
+		// if (player1.faceUp.length > 0) {
+		// 	console.log(player1.faceUp);
+		// } else {
+		// 	console.log("undefined");
+		// }
+
+		for (var i = 0; i < player1.faceUp.length; i++) {
+
+			var $faceUpCard = generateFaceUpCardImage(player1.faceUp[i]);
+			$faceUpCard.addClass('face-up-card');
+			player1.cardSlots[i].append($faceUpCard);
+
+		}
+
+
+		player2.cardSlotsElement.find('.face-up-card').remove();
+
+		// if (player1.faceUp.length > 0) {
+		// 	console.log(player1.faceUp);
+		// } else {
+		// 	console.log("undefined");
+		// }
+
+		for (var i = 0; i < player2.faceUp.length; i++) {
+
+			var $faceUpCard = generateFaceUpCardImage(player2.faceUp[i]);
+			$faceUpCard.addClass('face-up-card');
+			player2.cardSlots[i].append($faceUpCard);
+
+		}
+
+
+	}
+
 	function updateFaceUpView() {
 
-		debugger
-
 		currentPlayer.cardSlotsElement.find('.face-up-card').remove();
+
+		if (currentPlayer.faceUp.length > 0) {
+			console.log(currentPlayer.faceUp);
+		} else {
+			console.log("undefined");
+		}
 
 		for (var i = 0; i < currentPlayer.faceUp.length; i++) {
 
@@ -273,18 +327,100 @@ $(function () {
 
 	}
 
-	// function updateP2FaceUpView(){
+	function updateHandViewAll(){
 
-	// 	$p2CardSlots.find('.face-up-card').remove();
+		player1.handElement.find('.card-hand-container').remove();
 
-	// 	for (var i = 0; i < p2FaceUp.length; i++) {
+		var handLeftOffset = 0;
+		var handTopOffset = 17;
+		var cardCount = 0; 
 
-	// 		var $faceUpCard = generateFaceUpCardImage(p2FaceUp[i]);
-	// 		$faceUpCard.addClass('face-up-card');
-	// 		p2cardSlots[i].append($faceUpCard);
-	// 	}
 
-	// }
+
+		for (var i = 0; i < player1.hand.length; i++) {
+
+			if(cardCount > 20) {
+
+				//move next cards to the next row
+				handLeftOffset = 0;
+				handTopOffset += 36;
+				cardCount = 0;
+			}
+
+			var $handCardContainer = generateHandCardContainer();
+
+			var $faceDown = $('<div class="hand-face-down-card">'
+								+'<img src="images/back.jpg">'
+							+'</div>');
+
+			var $faceUpCard  = generateFaceUpCardImage(player1.hand[i]);
+
+			$faceUpCard.addClass(player1.playerName + 'hand-face-up-card');
+
+			$handCardContainer.append($faceDown).append($faceUpCard);
+
+			$handCardContainer.css('top', handTopOffset + 'px');
+
+			if (cardCount !==0) {
+
+				handLeftOffset += 21;
+				
+			}
+
+			$handCardContainer.css('left',handLeftOffset + 'px');
+
+			player1.handElement.append($handCardContainer);
+
+			cardCount++;
+		}
+
+		player2.handElement.find('.card-hand-container').remove();
+
+		var handLeftOffset = 0;
+		var handTopOffset = 17;
+		var cardCount = 0; 
+
+
+
+		for (var i = 0; i < player2.hand.length; i++) {
+
+			if(cardCount > 20) {
+
+				//move next cards to the next row
+				handLeftOffset = 0;
+				handTopOffset += 36;
+				cardCount = 0;
+			}
+
+			var $handCardContainer = generateHandCardContainer();
+
+			var $faceDown = $('<div class="hand-face-down-card">'
+								+'<img src="images/back.jpg">'
+							+'</div>');
+
+			var $faceUpCard  = generateFaceUpCardImage(player2.hand[i]);
+
+			$faceUpCard.addClass(player2.playerName + 'hand-face-up-card');
+
+			$handCardContainer.append($faceDown).append($faceUpCard);
+
+			$handCardContainer.css('top', handTopOffset + 'px');
+
+			if (cardCount !==0) {
+
+				handLeftOffset += 21;
+				
+			}
+
+			$handCardContainer.css('left',handLeftOffset + 'px');
+
+			player2.handElement.append($handCardContainer);
+
+			cardCount++;
+		}
+
+	}
+
 
 	function updateHandView(){
 
@@ -534,36 +670,30 @@ $(function () {
 		chooseFaceDownCards();
 		chooseFaceUpCards();
 		chooseHands();
-		updateView();
-		swapPlayer();
-		updateView()
-		
-		swapPlayer();
+		updateViewAll();
 
 	}
 
 	function setupRound() {
 
-		updateView();
 		swapPlayer();
+		getCurrentPlayer();
+		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
 		currentPlayer.swapCards.click({handElement: currentPlayer.handElement, cardsSlots: currentPlayer.cardSlotsElement}, verifyCardSwap)
 		currentPlayer.ready.click(currentPlayerRemoveListeners);
-		roundCounter++;
-
-
 	}
 
 	function currentPlayerRemoveListeners(){
 
+		updateView();
 		currentPlayer.handElement.off();
 		currentPlayer.cardSlotsElement.off();
 		currentPlayer.swapCards.off();
 		currentPlayer.ready.off();
 		// $gameBoardRow.off();
-		
 		if (roundCounter <= 1) {
 
 			setupRound();
@@ -603,8 +733,12 @@ $(function () {
 	}
 
 	function swapPlayer() {
+		roundCounter++;
+	}
 
-		currentPlayer = (currentPlayer.playerName === player1.playerName) ? player2 : player1;
+	function getCurrentPlayer() {
+		currentPlayer = (roundCounter % 2 === 0) ?  player2 : player1;
+
 	}
 
 	function displayError(text) {
@@ -624,16 +758,14 @@ $(function () {
 	function playOneRound() {
 		
 		swapPlayer();
-
+		getCurrentPlayer();
+		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.ready.click({handElement: currentPlayer.handElement}, verifyChosenCards);
 
-		if (roundCounter >=1 ) {
+		$gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
 
-			$gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
-
-		}
 
 	}
 
@@ -761,38 +893,29 @@ $(function () {
 		// playOneRound();
 
 		//so for some reason i need to call another function to get currentPlayer.hand and cardsInPlay...
-		pickUpCards()
+		pickUpCards();
+		debugger
+		updateView();
+		currentPlayerRemoveListeners();
 		
 	}
 
 	function pickUpCards() {
-			
-		console.log(cardsInPlay);
-		console.log(currentPlayer);
 
 		currentPlayer.hand = currentPlayer.hand.concat(cardsInPlay);
-
 		cardsInPlay = [];
 
+	}
 
-
-		updateView();
-
-
-		currentPlayerRemoveListeners();
-		playOneRound();
+	function sortNumber(a,b) {
+    	
+    	return a - b;
 
 	}
 
 
 	initalSetup();
-	
-	// setupRound();
-	playOneRound();
-
-	
-
-
+	setupRound();
 
 
 });
