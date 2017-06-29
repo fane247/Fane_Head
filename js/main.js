@@ -63,6 +63,25 @@ $(function () {
 
 	var chosenDeckIndexs = [];
 
+	var $main = $('main');
+	var $instructions = $('#instructions')
+	var $showInstructions = $('')
+
+
+	$('#play-game').click(function(event){
+
+		$instructions.css('display', 'none');
+		$main.css('display', 'block');
+
+	})
+
+	$('#show-instructions').click(function(event){
+
+		$instructions.css('display', 'block');
+		$main.css('display', 'none');
+
+	})
+
 	
 
 	function chooseRandomCard(){
@@ -334,6 +353,7 @@ $(function () {
 
 			}
 		}
+
 	}
 
 	function updateFaceDownView() {
@@ -417,6 +437,7 @@ $(function () {
 
 			$faceUpCard.addClass(player1.playerName + 'hand-face-up-card');
 
+
 			$handCardContainer.append($faceDown).append($faceUpCard);
 
 			$handCardContainer.css('top', handTopOffset + 'px');
@@ -429,7 +450,9 @@ $(function () {
 
 			$handCardContainer.css('left',handLeftOffset + 'px');
 
+
 			player1.handElement.append($handCardContainer);
+
 
 			cardCount++;
 		}
@@ -512,6 +535,7 @@ $(function () {
 
 			$faceUpCard.addClass(currentPlayer.playerName + 'hand-face-up-card');
 
+
 			$handCardContainer.append($faceDown).append($faceUpCard);
 
 			$handCardContainer.css('top', handTopOffset + 'px');
@@ -527,6 +551,7 @@ $(function () {
 			currentPlayer.handElement.append($handCardContainer);
 
 			cardCount++;
+
 		}
 
 	}
@@ -616,8 +641,6 @@ $(function () {
 	}
 
 	function setupRound() {
-
-		debugger
 
 		swapPlayer();
 		getCurrentPlayer();
@@ -767,7 +790,7 @@ $(function () {
 
 		if(currentPlayer.hand.length === 0){
 
-			debugger
+			debugger			
 
 		}
 
@@ -788,7 +811,7 @@ $(function () {
 
 			validMove = true;
 
-		}else if(!hasPlayedNoCards){
+		}else if(!hasPlayedNoCards && cardsInPlay.length !== 0){
 
 			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) {
 
@@ -806,6 +829,7 @@ $(function () {
 		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
 
 			playMove($chosenCards);
+			showFaceDownCard($chosenCards)
 			removeCardsFromFaceDown($chosenCards);
 
 			if (!validMove) {
@@ -852,6 +876,34 @@ $(function () {
 			displayError(errorMessage)
 
 		}
+
+	}
+
+	function showFaceDownCard($chosenCards){
+
+
+		debugger
+
+		var cardName = $chosenCards.eq(0).data('name');
+
+		var $faceUpCard = generateFaceUpCardImage(getCardByName(cardName));
+
+		$faceUpCard.css('display', 'none');
+
+		$faceUpCard.addClass('face-up-card');
+
+		$chosenCards.eq(0).parent().find('.face-down-card-img').remove();
+
+		$chosenCards.eq(0).parent().append($faceUpCard);
+
+		// $('.face-up-card').fadeIn();
+
+
+	}
+
+	function sleep (time) {
+
+  		return new Promise((resolve) => setTimeout(resolve, time));
 
 	}
 
@@ -962,11 +1014,13 @@ $(function () {
 
 	function drawOneCard() {
 
-		debugger
-
 		if (chosenDeckIndexs.length < deck.length) {
 
-			currentPlayer.hand.push(deck[chooseRandomCard()]);
+			var drawnCard = deck[chooseRandomCard()]
+
+			drawnCard.fadeIn = true;
+
+			currentPlayer.hand.push(drawnCard);
 
 		}
 	

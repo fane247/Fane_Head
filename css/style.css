@@ -1,6 +1,7 @@
 body {
 
     background-color: black;
+    font-family: 'Gill Sans';
 }
 
 main {
@@ -11,9 +12,9 @@ main {
     margin: 0 auto;
     position: relative;
     /*background: linear-gradient(#026406, #92d361);*/
-    font-family: 'Gill Sans';
     background-image: url(../images/royal_wallpaper2.jpg);
     background-size: 129% 100%; 
+    display: none;
 }	
 
 #p2-name{
@@ -462,6 +463,65 @@ img.face-down-card-img {
     color: white;
 
 }
+
+
+
+.fade-in-card {
+
+    display: none;
+}
+
+#instructions {
+
+    border-style: solid;
+    border-width: 1px;
+    width: 1054px;
+    height: 966px;
+    margin: 0 auto;
+    position: relative;
+    font-family: 'Gill Sans';
+    color: #FFEB3B;
+    font-size: 26px;
+    background-color: #14145f;
+    opacity: 0.7;
+    text-align: center;
+    display: absolute;
+    z-index: 2;
+    
+
+
+}
+
+#play-game {
+
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 25px;
+
+
+}
+
+#show-instructions {
+
+    background: rgb(9, 116, 162);
+    text-align: center;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    position: absolute;
+    top: 0;
+    right: 14px;
+
+}
+
+
 
 
 
