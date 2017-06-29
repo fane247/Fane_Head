@@ -14,27 +14,19 @@ $(function () {
 
 	var $gameBoardRow = $('#game-board-row');
 
-	//attempt to refactor functions to make them more dry
-
-	var p1CardSlot1 = $('p1card-slot-1');
-	var p1CardSlot2 = $('p1card-slot-1');
-	var p1CardSlot3 = $('p1card-slot-1');
-
-	var p1CardSlots = [p1CardSlot1, p1CardSlot2, p1CardSlot3];
-
 	var player1 = {
 
 		faceDown: [],
 		faceUp: [],
 		hand: [],
 		cardSlots: [$('#p1card-slot-1'),$('#p1card-slot-2'),$('#p1card-slot-3')],
-		handElement: $('#p1-hand'),
-		showCards: $('#p1ShowCards'),
-		ready: $('#p1-ready'),
-		cardSlotsElement: $('#p1-card-slots'),
-		swapCards: $('#p1-swap-cards'),
+		$handElement: $('#p1-hand'),
+		$showCards: $('#p1ShowCards'),
+		$ready: $('#p1-ready'),
+		$cardSlotsElement: $('#p1-card-slots'),
+		$swapCards: $('#p1-swap-cards'),
 		playerName: 'p1',
-		playerRow: $('#p1-row'),
+		$playerRow: $('#p1-row'),
 		$playerNameElement : $('#p1-name')
 
 	};
@@ -45,13 +37,13 @@ $(function () {
 		faceUp: [],
 		hand: [],
 		cardSlots: [$('#p2card-slot-1'),$('#p2card-slot-2'),$('#p2card-slot-3')],
-		handElement: $('#p2-hand'),
-		showCards: $('#p2ShowCards'),
-		ready: $('#p2-ready'),
-		cardSlotsElement: $('#p2-card-slots'),
-		swapCards: $('#p2-swap-cards'),
+		$handElement: $('#p2-hand'),
+		$showCards: $('#p2ShowCards'),
+		$ready: $('#p2-ready'),
+		$cardSlotsElement: $('#p2-card-slots'),
+		$swapCards: $('#p2-swap-cards'),
 		playerName: 'p2',
-		playerRow: $('#p2-row'),
+		$playerRow: $('#p2-row'),
 		$playerNameElement : $('#p2-name')
 
 	
@@ -86,17 +78,8 @@ $(function () {
 
 	function chooseRandomCard(){
 
-		// 	var initalRandomNumber = Math.floor(Math.random() * (deck.length -1)) + 0
-
-		// var randomNumber = initalRandomNumber === deck.length ? deck.length -1 : initalRandomNumber;
-
-		// chosenDeckIndexs.push(randomNumber);
-
-		// deck.splice(deck.indexOf(deck[randomNumber]), 1);
-
 		var cardIsTaken = true;
 		var randomNumber = 0;
-
 
 		while(cardIsTaken){
 
@@ -115,7 +98,7 @@ $(function () {
 	}
 
 
-
+	//deal out all cards
 
 	function chooseFaceDownCards(){
 
@@ -165,40 +148,31 @@ $(function () {
 		}
 	}
 
+	//used for swapping cards on first round
 
 	function swapCardHandToFaceUp(cardFromHand, cardFromFaceUp, playerObject){
 
-		// debugger;
+		// get cards to swap
 
 		var HandCard = getCardByName(cardFromHand);
 		var FaceUpCard = getCardByName(cardFromFaceUp);
 
+		//get index's of where they are in hand and faceup arrays
+
 		cardFromHandIndex = playerObject.hand.indexOf(HandCard);
 		cardFromFaceUpIndex = playerObject.faceUp.indexOf(FaceUpCard);
 
+		//remove from both arrays (hand and faceUp)
+
 		playerObject.hand.splice(cardFromHandIndex,1);
 		playerObject.faceUp.splice(cardFromFaceUpIndex,1);
+
+		//add to card to hand and faceUp
 
 		playerObject.hand.push(FaceUpCard);
 		playerObject.faceUp.push(HandCard);
 
 	}
-
-	// function swapCardHandToFaceUpP2(cardFromHand, cardFromFaceUp){
-
-	// 	var p2HandCard = getCardByName(cardFromHand);
-	// 	var p2FaceUpCard = getCardByName(cardFromFaceUp);
-
-	// 	cardFromHandIndex = p2Hand.indexOf(p2HandCard);
-	// 	cardFromFaceUpIndex = p2FaceUp.indexOf(p2FaceUpCard);
-
-	// 	p2Hand.splice(cardFromHandIndex,1);
-	// 	p2FaceUp.splice(cardFromFaceUpIndex,1);
-
-	// 	p2Hand.push(p2FaceUpCard);
-	// 	p2FaceUp.push(p2HandCard);
-
-	// }
 
 
 	function generateFaceUpCardImage(cardObject){
@@ -294,22 +268,9 @@ $(function () {
 
 	}
 
-	// function updateP2View(){
-
-	// 	updateP2FaceUpView();
-	// 	updateP2HandView();
-
-	// }
-
 	function updateFaceUpViewAll() {
 
-		player1.cardSlotsElement.find('.face-up-card').remove();
-
-		// if (player1.faceUp.length > 0) {
-		// 	console.log(player1.faceUp);
-		// } else {
-		// 	console.log("undefined");
-		// }
+		player1.$cardSlotsElement.find('.face-up-card').remove();
 
 		for (var i = 0; i < player1.faceUp.length; i++) {
 
@@ -320,13 +281,8 @@ $(function () {
 		}
 
 
-		player2.cardSlotsElement.find('.face-up-card').remove();
+		player2.$cardSlotsElement.find('.face-up-card').remove();
 
-		// if (player1.faceUp.length > 0) {
-		// 	console.log(player1.faceUp);
-		// } else {
-		// 	console.log("undefined");
-		// }
 
 		for (var i = 0; i < player2.faceUp.length; i++) {
 
@@ -341,7 +297,7 @@ $(function () {
 
 	function updateFaceUpView() {
 
-		currentPlayer.cardSlotsElement.find('.face-up-card').remove();
+		currentPlayer.$cardSlotsElement.find('.face-up-card').remove();
 
 		if (currentPlayer.faceUp.length !== 0) {
 
@@ -358,8 +314,8 @@ $(function () {
 
 	function updateFaceDownView() {
 
-		currentPlayer.cardSlotsElement.find('.face-down-card').remove();
-		currentPlayer.cardSlotsElement.find('.face-down-card-img').remove();
+		currentPlayer.$cardSlotsElement.find('.face-down-card').remove();
+		currentPlayer.$cardSlotsElement.find('.face-down-card-img').remove();
 
 		if (currentPlayer.faceUp.length === 0) {
 
@@ -370,7 +326,6 @@ $(function () {
 		for (var i = 0; i < currentPlayer.faceDown.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(currentPlayer.faceDown[i]);
-			// $faceDownCard.addClass('face-down-card');
 			currentPlayer.cardSlots[i].append($faceDownCard);
 
 		}
@@ -379,24 +334,22 @@ $(function () {
 
 	function updateFaceDownViewAll() {
 
-		player1.cardSlotsElement.find('.face-down-card').remove();
-		player1.cardSlotsElement.find('.face-down-card-img').remove();
+		player1.$cardSlotsElement.find('.face-down-card').remove();
+		player1.$cardSlotsElement.find('.face-down-card-img').remove();
 
 		for (var i = 0; i < player1.faceUp.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(player1.faceUp[i]);
-			// $faceDownCard.addClass('face-down-card');
 			player1.cardSlots[i].append($faceDownCard);
 
 		}
 
-		player2.cardSlotsElement.find('.face-down-card').remove();
-		player2.cardSlotsElement.find('.face-down-card-img').remove();
+		player2.$cardSlotsElement.find('.face-down-card').remove();
+		player2.$cardSlotsElement.find('.face-down-card-img').remove();
 
 		for (var i = 0; i < player2.faceUp.length; i++) {
 
 			var $faceDownCard = generateFaceDownCard(player2.faceUp[i]);
-			// $faceDownCard.addClass('face-down-card');
 			player2.cardSlots[i].append($faceDownCard);
 
 		}
@@ -409,7 +362,7 @@ $(function () {
 
 	function updateHandViewAll(){
 
-		player1.handElement.find('.card-hand-container').remove();
+		player1.$handElement.find('.card-hand-container').remove();
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -451,13 +404,13 @@ $(function () {
 			$handCardContainer.css('left',handLeftOffset + 'px');
 
 
-			player1.handElement.append($handCardContainer);
+			player1.$handElement.append($handCardContainer);
 
 
 			cardCount++;
 		}
 
-		player2.handElement.find('.card-hand-container').remove();
+		player2.$handElement.find('.card-hand-container').remove();
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -497,7 +450,7 @@ $(function () {
 
 			$handCardContainer.css('left',handLeftOffset + 'px');
 
-			player2.handElement.append($handCardContainer);
+			player2.$handElement.append($handCardContainer);
 
 			cardCount++;
 		}
@@ -507,7 +460,7 @@ $(function () {
 
 	function updateHandView(){
 
-		currentPlayer.handElement.find('.card-hand-container').remove();
+		currentPlayer.$handElement.find('.card-hand-container').remove();
 
 		var handLeftOffset = 0;
 		var handTopOffset = 17;
@@ -548,7 +501,7 @@ $(function () {
 
 			$handCardContainer.css('left',handLeftOffset + 'px');
 
-			currentPlayer.handElement.append($handCardContainer);
+			currentPlayer.$handElement.append($handCardContainer);
 
 			cardCount++;
 
@@ -627,7 +580,7 @@ $(function () {
 
 	function highlightOneCard(){
 
-		currentPlayer.playerRow.find('.highlighted').removeClass('highlighted');
+		currentPlayer.$playerRow.find('.highlighted').removeClass('highlighted');
 		$(this).toggleClass('highlighted');
 	}
 
@@ -646,20 +599,20 @@ $(function () {
 		getCurrentPlayer();
 		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
-		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
-		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
-		currentPlayer.swapCards.click({handElement: currentPlayer.handElement, cardsSlots: currentPlayer.cardSlotsElement}, verifyCardSwap)
-		currentPlayer.ready.click(currentPlayerRemoveListeners);
+		currentPlayer.$handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
+		currentPlayer.$handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
+		currentPlayer.$cardSlotsElement.on('click', '.face-up-card', highlightCard);
+		currentPlayer.$swapCards.click({$handElement: currentPlayer.$handElement, cardsSlots: currentPlayer.$cardSlotsElement}, verifyCardSwap)
+		currentPlayer.$ready.click(currentPlayerRemoveListeners);
 	}
 
 	function currentPlayerRemoveListeners(){
 
 		updateView();
-		currentPlayer.handElement.off();
-		currentPlayer.cardSlotsElement.off();
-		currentPlayer.swapCards.off();
-		currentPlayer.ready.off();
+		currentPlayer.$handElement.off();
+		currentPlayer.$cardSlotsElement.off();
+		currentPlayer.$swapCards.off();
+		currentPlayer.$ready.off();
 		// $gameBoardRow.off();
 		unHighlightCurrentPlayer(currentPlayer);
 
@@ -695,11 +648,11 @@ $(function () {
 	function verifyCardSwap(event) {
 
 
-		var validSwap = event.data.handElement.find('.highlighted').length === event.data.cardsSlots.find('.highlighted').length;
+		var validSwap = event.data.$handElement.find('.highlighted').length === event.data.cardsSlots.find('.highlighted').length;
 
 		if (validSwap) {
 
-			var $selectedHand = event.data.handElement.find('.highlighted');
+			var $selectedHand = event.data.$handElement.find('.highlighted');
 			var $selectedFaceUp = event.data.cardsSlots.find('.highlighted');
 
 			for (var i = 0; i < $selectedHand.length; i++) {
@@ -751,22 +704,21 @@ $(function () {
 		getCurrentPlayer();
 		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
-		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
-		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
-		currentPlayer.ready.click({playerRow: currentPlayer.playerRow}, verifyChosenCards);
+		currentPlayer.$handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
+		currentPlayer.$handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
+		currentPlayer.$ready.click({$playerRow: currentPlayer.$playerRow}, verifyChosenCards);
 
-		// $gameBoardRow.on('click', '.card-in-play', {cardsInPlayList: cardsInPlay, currentPlayer: currentPlayer}, pickUpCardsInPlay);
 		$('.card-in-play').click(pickUpCardsInPlay);
 
 		if (currentPlayer.hand.length === 0) {
 
-			currentPlayer.cardSlotsElement.on('click', '.face-up-card', highlightCard);
+			currentPlayer.$cardSlotsElement.on('click', '.face-up-card', highlightCard);
 
 		}
 
 		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
 
-			currentPlayer.cardSlotsElement.on('click', '.face-down-card', highlightOneCard);
+			currentPlayer.$cardSlotsElement.on('click', '.face-down-card', highlightOneCard);
 
 		}
 
@@ -797,7 +749,10 @@ $(function () {
 		debugger
 
 
-		var $chosenCards = event.data.playerRow.find('.highlighted')
+		var $chosenCards = event.data.$playerRow.find('.highlighted')
+
+
+
 		var sameRank = identical($chosenCards);
 		var validMove = false;
 		var errorMessage = '';
@@ -807,7 +762,6 @@ $(function () {
 
 			errorMessage = 'you must play at least one card!'	
 		}
-
 
 		if (!sameRank) {
 
@@ -1036,21 +990,6 @@ $(function () {
 
 	function pickUpCardsInPlay(event) {
 
-		
-
-		//concat currentPlayerHand with cards in play and assign to currentplayerHand
-		// event.data.currentPlayer.hand = event.data.currentPlayer.hand.concat(event.data.cardsInPlayList);
-
-		//cardsInPlay appears to be empty on click
-
-		//empty cards in play
-		// event.data.cardsInPlayList = [];
-
-		// updateView();
-		// currentPlayerRemoveListeners();
-		// playOneRound();
-
-		//so for some reason i need to call another function to get currentPlayer.hand and cardsInPlay...
 		pickUpCards();
 		updateView();
 		currentPlayerRemoveListeners();

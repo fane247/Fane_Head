@@ -36,7 +36,7 @@ If a player can play all thier cards they are the winner!
 
 ## extensions 
 
-The original game has power cards which burn the pack, reset to 2 and also are see-through. Given more time. I would also like to add animations and sound effects to cards being played.
+The original game has power cards which burn the pack, reset to 2 and also are see-through. Given more time. I would also like to implemnet theese and add animations and sound effects to cards being played.
 
 
 
