@@ -35,7 +35,7 @@ $(function () {
 		swapCards: $('#p1-swap-cards'),
 		playerName: 'p1',
 		playerRow: $('#p1-row'),
-		playerNameElement : $('#p1-name')
+		$playerNameElement : $('#p1-name')
 
 	};
 
@@ -52,7 +52,7 @@ $(function () {
 		swapCards: $('#p2-swap-cards'),
 		playerName: 'p2',
 		playerRow: $('#p2-row'),
-		playerNameElement : $('#p2-name')
+		$playerNameElement : $('#p2-name')
 
 	
 	};
@@ -611,8 +611,11 @@ $(function () {
 
 	function setupRound() {
 
+		debugger
+
 		swapPlayer();
 		getCurrentPlayer();
+		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
@@ -629,6 +632,8 @@ $(function () {
 		currentPlayer.swapCards.off();
 		currentPlayer.ready.off();
 		// $gameBoardRow.off();
+		unHighlightCurrentPlayer(currentPlayer);
+
 		if (roundCounter <= 1) {
 
 			setupRound();
@@ -685,12 +690,16 @@ $(function () {
 	}
 
 	function swapPlayer() {
+
 		roundCounter++;
+
+
 	}
 
 	function getCurrentPlayer() {
-		currentPlayer = (roundCounter % 2 === 0) ?  player2 : player1;
 
+		currentPlayer = (roundCounter % 2 === 0) ?  player2 : player1;
+		
 	}
 
 	function displayError(text) {
@@ -709,9 +718,9 @@ $(function () {
 
 	function playOneRound() {
 
-
 		swapPlayer();
 		getCurrentPlayer();
+		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
@@ -736,6 +745,18 @@ $(function () {
 
 	}
 
+	function highlightCurrentPlayer(currentPlayer){
+
+		currentPlayer.$playerNameElement.addClass('current-player');
+
+	}
+
+	function unHighlightCurrentPlayer(currentPlayer){
+
+		currentPlayer.$playerNameElement.removeClass('current-player');
+
+	}
+
 	function verifyChosenCards(event){
 
 		if(currentPlayer.hand.length === 0){
@@ -744,7 +765,6 @@ $(function () {
 
 		}
 
-		debugger
 
 		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
@@ -755,13 +775,6 @@ $(function () {
 		if (!sameRank) {
 
 			errorMessage = 'you can only play more than one card of the same rank!';
-
-		}
-
-		if (hasPlayedNoCards) {
-
-			errorMessage = 'you must play at least one card!';
-
 
 		}
 

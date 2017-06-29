@@ -1,3 +1,8 @@
+body {
+
+    background-color: black;
+}
+
 main {
 	border-style: solid;
 	border-width: 1px;
@@ -273,8 +278,17 @@ img.face-down-card-img {
 
 .current-player{
 
-	color: black;
-    background: yellow;
+    margin-left: 24px;
+    margin-top: 0px;
+    position: absolute;
+    background: yellow !important; 
+    text-align: center; 
+    color: black !important; 
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
 }
 
 #cards-in-play{
