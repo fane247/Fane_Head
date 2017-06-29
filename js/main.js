@@ -600,6 +600,12 @@ $(function () {
 
 	}
 
+	function highlightOneCard(){
+
+		currentPlayer.playerRow.find('.highlighted').removeClass('highlighted');
+		$(this).toggleClass('highlighted');
+	}
+
 	function initalSetup() {
 
 		chooseFaceDownCards();
@@ -735,9 +741,9 @@ $(function () {
 
 		}
 
-		if (currentPlayer.faceUp.length === 0) {
+		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
 
-			currentPlayer.cardSlotsElement.on('click', '.face-down-card', highlightCard);
+			currentPlayer.cardSlotsElement.on('click', '.face-down-card', highlightOneCard);
 
 		}
 
