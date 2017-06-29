@@ -6,3 +6,12 @@
 //error message has stopped working;
 
 //what have we learned specifically in this project
+
+
+//10 burn card seems to not discard when played from facedown, or hand it seems
+//played a king and got a burn
+//had a card play from face down lower than the board card and still played into the middle rather than back into the hand
+
+//second isValidMove() will always be true as you've already played the same card
+//something strange happened when removing from facedown. redebugg
+//had a four of a kind burn unexpectedly

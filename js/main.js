@@ -345,7 +345,7 @@ $(function () {
 
 		if (currentPlayer.faceUp.length === 0) {
 
-			debugger;
+			// debugger;
 
 		}
 
@@ -365,9 +365,9 @@ $(function () {
 		player1.$cardSlotsElement.find('.face-down-card').remove();
 		player1.$cardSlotsElement.find('.face-down-card-img').remove();
 
-		for (var i = 0; i < player1.faceUp.length; i++) {
+		for (var i = 0; i < player1.faceDown.length; i++) {
 
-			var $faceDownCard = generateFaceDownCard(player1.faceUp[i]);
+			var $faceDownCard = generateFaceDownCard(player1.faceDown[i]);
 			player1.cardSlots[i].append($faceDownCard);
 
 		}
@@ -375,9 +375,9 @@ $(function () {
 		player2.$cardSlotsElement.find('.face-down-card').remove();
 		player2.$cardSlotsElement.find('.face-down-card-img').remove();
 
-		for (var i = 0; i < player2.faceUp.length; i++) {
+		for (var i = 0; i < player2.faceDown.length; i++) {
 
-			var $faceDownCard = generateFaceDownCard(player2.faceUp[i]);
+			var $faceDownCard = generateFaceDownCard(player2.faceDown[i]);
 			player2.cardSlots[i].append($faceDownCard);
 
 		}
@@ -790,46 +790,28 @@ $(function () {
 
 	function isValidMove($chosenCards) {
 
-
-		sameRank = identical($chosenCards); // cards are all the same rank
-		hasPlayedNoCards = typeof $chosenCards.data() === 'undefined'; //returns true if user hasn't played selected any cards when clicking ready
-
-		if (hasPlayedNoCards) {
-
-			errorMessage = 'you must play at least one card!';
-		}
-
-		if (!sameRank) {
-
-			errorMessage += '\n you can only play more than one card of the same rank!';
-
-		}
-
 		//if there are no cards on the board and the user has played at least one card into the middle
 
-		if (cardsInPlay.length === 0 && !hasPlayedNoCards) {
+		if (cardsInPlay.length === 0) {
 
 			validMove = true;
 
 		//if the user has played a card and there is at least on card on the board
-		}else if(!hasPlayedNoCards && cardsInPlay.length !== 0){ 
+		}else if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) { 
 
 			//returns true if card played is equal to or higher than the one on the board
-			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) { 
-
-				validMove = true;
-
-			}else {
-
-				errorMessage += "\n you must play a card equal to or higher than the one on the board!";
-			}	
-
-		}
-
-		if(isAPowerCard($chosenCards) && sameRank && !hasPlayedNoCards){
-
 			validMove = true;
+
+		}else {
+
+			validMove = false;
 		}
+
+
+		// if(isAPowerCard($chosenCards) && sameRank && !hasPlayedNoCards){
+
+		// 	validMove = true;
+		// }
 
 		return validMove
 
@@ -842,70 +824,230 @@ $(function () {
 
 	}
 
+	function isFourOfAKind($chosenCards){
+
+		//not working properly
+
+		var checkingCardsInplay = [];
+		var cardsToPlay = []
+
+		for (var i = 0; i < $chosenCards.length; i++) {
+
+			var cardName = $chosenCards.eq(i).data('name');
+
+			cardsToPlay.push(getCardByName(cardName));
+
+		}
+
+		checkingCardsInplay = cardsInPlay.concat(cardsToPlay);
+
+		if (checkingCardsInplay.length < 4) {
+
+			return false;
+
+		}else{
+
+
+
+			var lastIndex = checkingCardsInplay.length-1;
+			var fourthToLastIndex = lastIndex -3;
+
+			var lastFourCards = checkingCardsInplay.slice(fourthToLastIndex,lastIndex)
+			
+
+			return identicalCardsObject(lastFourCards);
+		}
+
+	}
+
+	function removeCardsFromPlayer($chosenCards){
+
+		//if you are on your facedown cards
+		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0){
+
+			removeCardsFromFaceDown($chosenCards);
+
+
+		//if you have no cards in your hand but you have cards in your faceup
+		}else if(currentPlayer.hand.length === 0 && currentPlayer.faceUp.length !== 0){
+
+			removeCardsFromFaceUp($chosenCards);
+
+		}else{
+
+			removeCardsFromHand($chosenCards);
+
+		}
+
+	}
+
 	function verifyChosenCards(event){
 
 		if(currentPlayer.hand.length === 0){
 
-			debugger			
+			// debugger			
 
 		}
 
+		debugger
+
+
+		errorMessage = "";
 		var $chosenCards = event.data.$playerRow.find('.highlighted');
-
-	
+		sameRank = identical($chosenCards); // cards are all the same rank
 		validMove = isValidMove($chosenCards)
+		hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
+		var faceDownCardsPickUp = false; //returns true if user hasn't played selected any cards when clicking ready
+
+		//if you are on your last cards you can play the card nomatter what. the not four of a kind is to make sure play move isn't played twice
+		if(currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0 && !isFourOfAKind($chosenCards)){
+
+			if (!validMove) {
+
+				faceDownCardsPickUp = true
+			}
 
 
-		//if you are on your facedown cards
-		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
+			validMove = true;
+		}
+
+		if (!sameRank) {
+
+			errorMessage += '\n you can only play more than one card of the same rank!';
+
+		}else if (hasPlayedNoCards) {
+
+			errorMessage = 'you must play at least one card!';
+
+		}else if($chosenCards.data('value') === 10 || isFourOfAKind($chosenCards)){
+
+			cardsInPlay = []
+			updateView();
+
+		}else if(isAPowerCard($chosenCards)){
 
 			playMove($chosenCards);
-			showFaceDownCard($chosenCards)
-			removeCardsFromFaceDown($chosenCards);
+
+		}else if(validMove){
+
+			playMove($chosenCards);
+
+		}else if(!validMove){
+
+			errorMessage += "\n you must play a card equal to or higher than the one on the board!";
+
+		}
 
 
-			//if you facedown card turns out to be lower than the one on the board
-			if (!validMove) {
+		//remove from either hand, faceup or facedown if you have played one card that is valid
+
+		if(errorMessage === ""){
+
+			removeCardsFromPlayer($chosenCards)
+
+
+			//only picks up on a invalid facedown card play
+			if (faceDownCardsPickUp){
 
 				pickUpCards();
 
 			}
 
-			updateView();
-			currentPlayerRemoveListeners();
+			//if you havent played a 10 or 4 of a kind to burn the pack (or you had to pick up because of a low facedown card) the turn passes over
+			if (cardsInPlay.length !==0 || faceDownCardsPickUp) {
 
-			//if the card played is the same rank and higher than the one on the board
-		} else if (validMove && sameRank && !hasPlayedNoCards) {
+				if ($chosenCards.data('value') === 2) {
 
-			playMove($chosenCards);
+					annouceMessage('reset!');
 
-			//if you have cards in your hand
-			if (currentPlayer.hand.length !== 0) {
-				
-				removeCardsFromHand($chosenCards);
+				}
 
-			//if you have cards in your faceup slots
-			}else if(currentPlayer.faceUp.length !== 0){
+				updateView();
+				currentPlayerRemoveListeners();
 
-				removeCardsFromFaceUp($chosenCards);
+			}else{
+
+				annouceMessage('Burn!');
+				updateView();
 
 			}
 
-
-			//while there are cards in the deck keep drawing until you have 3 in the hand
-			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
-
-				drawOneCard();
-			}
-
-			updateView();
-			currentPlayerRemoveListeners();
-
-		} else {
+			
+		}else{
 
 			displayError(errorMessage);
 
 		}
+	
+
+
+	
+		// validMove = isValidMove($chosenCards)
+
+
+		// //if you are on your facedown cards
+		// if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
+
+		// 	playMove($chosenCards);
+		// 	showFaceDownCard($chosenCards)
+		// 	removeCardsFromFaceDown($chosenCards);
+
+
+		// 	//if you facedown card turns out to be lower than the one on the board
+		// 	if (!validMove) {
+
+		// 		pickUpCards();
+
+		// 	}
+
+		// 	updateView();
+		// 	currentPlayerRemoveListeners();
+
+		// 	//if the card played is the same rank and higher than the one on the board
+		// } else if (validMove && sameRank && !hasPlayedNoCards) {
+
+		// 	playMove($chosenCards);
+
+		// 	//if you have cards in your hand
+		// 	if (currentPlayer.hand.length !== 0) {
+				
+		// 		removeCardsFromHand($chosenCards);
+
+		// 	//if you have cards in your faceup slots
+		// 	}else if(currentPlayer.faceUp.length !== 0){
+
+		// 		removeCardsFromFaceUp($chosenCards);
+
+		// 	}
+
+
+		// 	//while there are cards in the deck keep drawing until you have 3 in the hand
+		// 	while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
+
+		// 		drawOneCard();
+		// 	}
+
+		// 	updateView();
+		// 	currentPlayerRemoveListeners();
+
+		// } else {
+
+		// 	displayError(errorMessage);
+
+		// }
+
+	}
+
+	function annouceMessage(messageString){
+
+		$annoucerElement.html(messageString);
+		$annoucerElement.fadeIn();
+		setTimeout(function() {
+
+			$annoucerElement.fadeOut();
+
+
+		}, 3000);
 
 	}
 
@@ -913,7 +1055,7 @@ $(function () {
 
 		//WIP
 
-		debugger
+		// debugger
 
 		var cardName = $chosenCards.eq(0).data('name');
 
@@ -936,6 +1078,19 @@ $(function () {
 
   		return new Promise((resolve) => setTimeout(resolve, time));
 
+	}
+
+	function identicalCardsObject(CardObjectArray) {
+
+	    for(var i = 0; i < CardObjectArray.length - 1; i++) {
+
+	        if(CardObjectArray[i].value !== CardObjectArray[i+1].value ) {
+
+	            return false;
+	        }
+	    }
+
+	    return true;
 	}
 
 
@@ -969,7 +1124,6 @@ $(function () {
 		cardsInPlay = cardsInPlay.concat(cardsToPlay);
 
 
-
 	}
 
 	function removeCardsFromHand($chosenCards){
@@ -998,7 +1152,7 @@ $(function () {
 
 		if (currentPlayer.faceUp.length === 0 ) {
 
-			debugger
+			// debugger
 
 		}
 
@@ -1024,6 +1178,8 @@ $(function () {
 
 	function removeCardsFromFaceDown($chosenCards){
 
+		debugger;
+
 		for (var i = 0; i < $chosenCards.length; i++) {
 
 			$chosenCards.eq(i);
@@ -1032,7 +1188,7 @@ $(function () {
 			
 				if($chosenCards.eq(i).data('name') === currentPlayer.faceDown[j].name){
 
-					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceDown[j]);
+					playedCardIndex = currentPlayer.faceDown.indexOf(currentPlayer.faceDown[j]);
 
 					currentPlayer.faceDown.splice(playedCardIndex, 1);
 
