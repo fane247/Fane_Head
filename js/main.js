@@ -238,6 +238,8 @@ $(function () {
 		
 	}
 
+	//updates both players hands
+
 	function updateViewAll() {
 
 		updateGameBoardRow();
@@ -248,15 +250,23 @@ $(function () {
 
 	}
 
+
+
 	function updateGameBoardRow(){
 
+		//remove any cards in play from middle
+
 		$gameBoardRow.find('.card-in-play').remove();
+
+		//if there are no more cards in the deck remove the deck image
 
 		if (chosenDeckIndexs.length === deck.length) {
 
 			$('#deck').remove();
 
 		}
+
+		//if there are cards in play refresh regenerate the cards 
 
 		if (cardsInPlay.length!==0) {
 
@@ -270,7 +280,11 @@ $(function () {
 
 	}
 
+	//updates both players faceup cards. only used for the beginning of the game
+
 	function updateFaceUpViewAll() {
+
+		//remove any cards in play from the players face up cards
 
 		player1.$cardSlotsElement.find('.face-up-card').remove();
 
@@ -284,6 +298,8 @@ $(function () {
 
 
 		player2.$cardSlotsElement.find('.face-up-card').remove();
+
+		//remove any cards in play from the players face up cards
 
 
 		for (var i = 0; i < player2.faceUp.length; i++) {
@@ -334,6 +350,8 @@ $(function () {
 
 	}
 
+	//updates both players faceDown cards. only used for the beginning of the game
+
 	function updateFaceDownViewAll() {
 
 		player1.$cardSlotsElement.find('.face-down-card').remove();
@@ -360,7 +378,7 @@ $(function () {
 	}
 
 
-
+	//updates both players hand cards. only used for the beginning of the game
 
 	function updateHandViewAll(){
 
@@ -395,7 +413,11 @@ $(function () {
 
 			$handCardContainer.append($faceDown).append($faceUpCard);
 
+
+
 			$handCardContainer.css('top', handTopOffset + 'px');
+
+			//shift each card in the hand to the left
 
 			if (cardCount !==0) {
 
@@ -495,6 +517,8 @@ $(function () {
 
 			$handCardContainer.css('top', handTopOffset + 'px');
 
+			//shift each card in the hand to the left
+
 			if (cardCount !==0) {
 
 				handLeftOffset += 21;
@@ -540,6 +564,8 @@ $(function () {
 
 	}
 
+	//hide both hands
+
 	function hideHands() {
 
 		$('.' + player1.playerName + 'hand-face-up-card').css('z-index', '-1');
@@ -574,11 +600,15 @@ $(function () {
 
 	}
 
+	//called when a player clicks a card to be played into the middle or swapped
+
 	function highlightCard() {
 
 		$(this).toggleClass('highlighted');
 
 	}
+
+	//called when a player clicks a faceDown card to be played into the middle or swapped
 
 	function highlightOneCard(){
 
@@ -595,6 +625,8 @@ $(function () {
 
 	}
 
+	//used for each player's first round to swap cards from hand to faceUp cards
+
 	function setupRound() {
 
 		swapPlayer();
@@ -608,6 +640,8 @@ $(function () {
 		currentPlayer.$ready.click(currentPlayerRemoveListeners);
 	}
 
+	//used after each turn to remove listeners and call playOneRound again unless there is a winner
+
 	function currentPlayerRemoveListeners(){
 
 		updateView();
@@ -615,7 +649,6 @@ $(function () {
 		currentPlayer.$cardSlotsElement.off();
 		currentPlayer.$swapCards.off();
 		currentPlayer.$ready.off();
-		// $gameBoardRow.off();
 		unHighlightCurrentPlayer(currentPlayer);
 
 		if (roundCounter <= 1) {
@@ -646,6 +679,8 @@ $(function () {
 
 	}
 
+
+	//used to check a player is swapping the same number of hand cards and faceup cards
 
 	function verifyCardSwap(event) {
 
@@ -686,6 +721,8 @@ $(function () {
 		
 	}
 
+	//used for displaying any invalid moves
+
 	function displayError(text) {
 
 		$errorBox.fadeIn();
@@ -699,6 +736,8 @@ $(function () {
 		$errorBox.fadeOut();
 
 	}
+
+	//after swap round this is the main function used to setup click listeners for the current player 
 
 	function playOneRound() {
 
@@ -724,9 +763,8 @@ $(function () {
 
 		}
 
-
-
 	}
+
 
 	function highlightCurrentPlayer(currentPlayer){
 
@@ -740,6 +778,8 @@ $(function () {
 
 	}
 
+	//used to verify the card played into the middle of the board
+
 	function verifyChosenCards(event){
 
 		if(currentPlayer.hand.length === 0){
@@ -752,13 +792,10 @@ $(function () {
 
 
 		var $chosenCards = event.data.$playerRow.find('.highlighted')
-
-
-
-		var sameRank = identical($chosenCards);
+		var sameRank = identical($chosenCards); // cards are all the same rank
 		var validMove = false;
 		var errorMessage = '';
-		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
+		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined'; //returns true if user hasn't played selected any cards when clicking ready
 
 		if (hasPlayedNoCards) {
 
@@ -771,13 +808,17 @@ $(function () {
 
 		}
 
+		//if there are no cards on the board and the user has played at least one card into the middle
+
 		if (cardsInPlay.length === 0 && !hasPlayedNoCards) {
 
 			validMove = true;
 
-		}else if(!hasPlayedNoCards && cardsInPlay.length !== 0){
+		//if the user has played a card and there is at least on card on the board
+		}else if(!hasPlayedNoCards && cardsInPlay.length !== 0){ 
 
-			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) {
+			//returns true if card played is equal to or higher than the one on the board
+			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) { 
 
 				validMove = true;
 
@@ -788,14 +829,16 @@ $(function () {
 
 		}
 
-		//if a facedown  card is played errormessage gets assigned by accident
 
+		//if you are on your facedown cards
 		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
 
 			playMove($chosenCards);
 			showFaceDownCard($chosenCards)
 			removeCardsFromFaceDown($chosenCards);
 
+
+			//if you facedown card turns out to be lower than the one on the board
 			if (!validMove) {
 
 				pickUpCards();
@@ -805,28 +848,25 @@ $(function () {
 			updateView();
 			currentPlayerRemoveListeners();
 
-
+			//if the card played is the same rank and higher than the one on the board
 		} else if (validMove && sameRank && !hasPlayedNoCards) {
 
 			playMove($chosenCards);
 
+			//if you have cards in your hand
 			if (currentPlayer.hand.length !== 0) {
 				
 				removeCardsFromHand($chosenCards);
 
+			//if you have cards in your faceup slots
 			}else if(currentPlayer.faceUp.length !== 0){
 
 				removeCardsFromFaceUp($chosenCards);
 
 			}
 
-			// }else if(currentPlayer.faceUp.length === 0){
 
-			// 	removeCardsFromFaceDown($chosenCards);
-
-			// }
-			
-
+			//while there are cards in the deck keep drawing until you have 3 in the hand
 			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
 
 				drawOneCard();
@@ -845,6 +885,7 @@ $(function () {
 
 	function showFaceDownCard($chosenCards){
 
+		//WIP
 
 		debugger
 
@@ -884,12 +925,13 @@ $(function () {
 	    return true;
 	}
 
+	//gets the card object by name adds it to cards in play (on the board)
+
 	function playMove($chosenCards){
 
 		var cardsToPlay = []
 
 		for (var i = 0; i < $chosenCards.length; i++) {
-
 
 
 			var cardName = $chosenCards.eq(i).data('name');
