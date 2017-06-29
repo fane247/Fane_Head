@@ -2,19 +2,19 @@
 
 ![](images/screenShot.png)
 
-##Overview
+## Overview
 
 each player is aiming to get rid of all of thier cards. the play who fails to do this is the FaneHead. each player must put a card higher than what is on the board. suits don't apply in this game.
 
-##How to play
+## How to play
 
 clone this repository and open index.html in the browser. you will be presented with an instructions page where you can click play to play the game.
 
-##technologies
+## technologies
 
 the game is played in the browser using html, css and javascript (with a heavy use of jQuery).
 
-##detailed instructions
+## detailed instructions
 
 Each player is aiming to get rid of all of thier cards. the play who fails to do this is the shit head.  each player must put a card higher than what is on the board
 
@@ -34,7 +34,7 @@ Once all face up cards have been played you can play one face down card at a tim
 
 If a player can play all thier cards they are the winner!
 
-##extensions 
+## extensions 
 
 The original game has power cards which burn the pack, reset to 2 and also are see-through. Given more time. I would also like to add animations and sound effects to cards being played.
 
