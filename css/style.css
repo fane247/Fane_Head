@@ -5,8 +5,10 @@ main {
     height: 843px;
     margin: 0 auto;
     position: relative;
-    background: linear-gradient(#026406, #92d361);
+    /*background: linear-gradient(#026406, #92d361);*/
     font-family: 'Gill Sans';
+    background-image: url(../images/royal_wallpaper2.jpg);
+    background-size: 129% 100%; 
 }	
 
 #p2-name{
@@ -113,6 +115,25 @@ main {
 
 }
 
+#annoucer{
+
+    position: absolute;
+    top: -17px;
+    height: 169px;
+    width: 300px;
+/*    border-style: solid;
+    border-width: 1px;
+    border-color: yellow;*/
+    left: -275px;
+    background-color: #14145f;
+    opacity: 0.7;
+    color: #FFEB3B;
+    display: none;
+    text-align: center;
+    font-size: 36px;
+    padding-top: 18px;
+}
+
 img.face-down-card-img {
 
 	height: 153px;
@@ -187,9 +208,6 @@ img.face-down-card-img {
 
 }
 
-#p1-show-cards:active {
-  background-color: red;
-}
 
 #p2-ready {
 
@@ -225,12 +243,16 @@ img.face-down-card-img {
 #error-box{
 
 	width: 400px;
-	height: 30px;
+    height: 92px;
 	position: absolute;
 	top: 49px;
     left: 297px;
-    color: #ad1c13;
-    font-size: 26px
+    color: #FFEB3B;
+    font-size: 26px;
+    background-color: #14145f;
+    opacity: 0.7;
+    text-align: center;
+    display: none;
 }
 
 

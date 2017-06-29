@@ -34,7 +34,8 @@ $(function () {
 		cardSlotsElement: $('#p1-card-slots'),
 		swapCards: $('#p1-swap-cards'),
 		playerName: 'p1',
-		playerRow: $('#p1-row')
+		playerRow: $('#p1-row'),
+		playerNameElement : $('#p1-name')
 
 	};
 
@@ -50,9 +51,13 @@ $(function () {
 		cardSlotsElement: $('#p2-card-slots'),
 		swapCards: $('#p2-swap-cards'),
 		playerName: 'p2',
-		playerRow: $('#p2-row')
+		playerRow: $('#p2-row'),
+		playerNameElement : $('#p2-name')
+
 	
 	};
+
+	var $annoucerElement = $('#annoucer')
 
 	var currentPlayer = player2;
 
@@ -630,8 +635,25 @@ $(function () {
 
 		}else{
 
-			playOneRound();
+			if (currentPlayerHasWon()){ 	
+
+				displayWinner();
+
+			}else{
+
+				playOneRound();
+			}
+	
+			
 		}	
+
+	}
+
+	function displayWinner(){
+
+		var playerNumber = currentPlayer.playerName.charAt(1);
+		$annoucerElement.html('player ' + playerNumber + ' has won!' )
+		$annoucerElement.fadeIn();
 
 	}
 
@@ -686,7 +708,8 @@ $(function () {
 	}
 
 	function playOneRound() {
-		
+
+
 		swapPlayer();
 		getCurrentPlayer();
 		console.log('round : ' + roundCounter);
@@ -721,10 +744,13 @@ $(function () {
 
 		}
 
+		debugger
+
 		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
 		var validMove = false;
 		var errorMessage = '';
+		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
 
 		if (!sameRank) {
 
@@ -732,13 +758,24 @@ $(function () {
 
 		}
 
-		if (cardsInPlay.length === 0) {
+		if (hasPlayedNoCards) {
+
+			errorMessage = 'you must play at least one card!';
+
+
+		}
+
+		if (cardsInPlay.length === 0 && !hasPlayedNoCards) {
 
 			validMove = true;
 
-		}else if(cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))){
+		}else if(!hasPlayedNoCards){
 
-			validMove = true;
+			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) {
+
+				validMove = true;
+
+			}	
 
 		}else {
 
@@ -762,7 +799,7 @@ $(function () {
 			currentPlayerRemoveListeners();
 
 
-		} else if (validMove && sameRank) {
+		} else if (validMove && sameRank && !hasPlayedNoCards) {
 
 			playMove($chosenCards);
 
@@ -945,6 +982,13 @@ $(function () {
 		cardsInPlay = [];
 
 	}
+
+	function currentPlayerHasWon() {
+
+		return (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0 && currentPlayer.faceDown.length ===0)
+		
+	}
+
 
 	initalSetup();
 	setupRound();
