@@ -2,10 +2,10 @@
 
 $(function () {
 
-	var hearts = 'images/hearts.png'
-	var clubs = 'images/clubs.png'
-	var diamonds = 'images/diamonds.png'
-	var spades = 'images/spades.png'
+	var hearts = 'images/hearts.png';
+	var clubs = 'images/clubs.png';
+	var diamonds = 'images/diamonds.png';
+	var spades = 'images/spades.png';
 
 	var $errorBox = $('#error-box');
 
@@ -51,15 +51,17 @@ $(function () {
 	
 	};
 
-	var $annoucerElement = $('#annoucer')
+	var $annoucerElement = $('#annoucer');
 
 	var currentPlayer = player2;
 
 	var chosenDeckIndexs = [];
 
 	var $main = $('main');
-	var $instructions = $('#instructions')
-	var $showInstructions = $('')
+	var $instructions = $('#instructions');
+	var $showInstructions = $('');
+	var validMove = false;
+	var errorMessage = '';
 
 
 	$('#play-game').click(function(event){
@@ -537,7 +539,7 @@ $(function () {
 
 	function toggleShowHand(){
 
-		var zIndex = $('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index')
+		var zIndex = $('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index');
 
 		if (zIndex === '0') {
 
@@ -636,7 +638,7 @@ $(function () {
 		currentPlayer.$handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.$handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
 		currentPlayer.$cardSlotsElement.on('click', '.face-up-card', highlightCard);
-		currentPlayer.$swapCards.click({$handElement: currentPlayer.$handElement, cardsSlots: currentPlayer.$cardSlotsElement}, verifyCardSwap)
+		currentPlayer.$swapCards.click({$handElement: currentPlayer.$handElement, cardsSlots: currentPlayer.$cardSlotsElement}, verifyCardSwap);
 		currentPlayer.$ready.click(currentPlayerRemoveListeners);
 	}
 
@@ -700,7 +702,7 @@ $(function () {
 
 		}else{
 
-			displayError('you must swap an equal amount of cards from your hand to your face up cards')
+			displayError('you must swap an equal amount of cards from your hand to your face up cards');
 
 		}
 
@@ -791,15 +793,13 @@ $(function () {
 		debugger
 
 
-		var $chosenCards = event.data.$playerRow.find('.highlighted')
+		var $chosenCards = event.data.$playerRow.find('.highlighted');
 		var sameRank = identical($chosenCards); // cards are all the same rank
-		var validMove = false;
-		var errorMessage = '';
 		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined'; //returns true if user hasn't played selected any cards when clicking ready
 
 		if (hasPlayedNoCards) {
 
-			errorMessage = 'you must play at least one card!'	
+			errorMessage = 'you must play at least one card!';
 		}
 
 		if (!sameRank) {
@@ -824,7 +824,7 @@ $(function () {
 
 			}else {
 
-				errorMessage += "\n you must play a card equal to or higher than the one on the board!"
+				errorMessage += "\n you must play a card equal to or higher than the one on the board!";
 			}	
 
 		}
@@ -877,7 +877,7 @@ $(function () {
 
 		} else {
 
-			displayError(errorMessage)
+			displayError(errorMessage);
 
 		}
 
@@ -950,13 +950,13 @@ $(function () {
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
-			$chosenCards.eq(i)
+			$chosenCards.eq(i);
 
 			for (var j = 0; j < currentPlayer.hand.length; j++) {
 			
 				if($chosenCards.eq(i).data('name') === currentPlayer.hand[j].name){
 
-					playedCardIndex = currentPlayer.hand.indexOf(currentPlayer.hand[j])
+					playedCardIndex = currentPlayer.hand.indexOf(currentPlayer.hand[j]);
 
 					currentPlayer.hand.splice(playedCardIndex, 1);
 
@@ -984,7 +984,7 @@ $(function () {
 			
 				if($chosenCards.eq(i).data('name') === currentPlayer.faceUp[j].name){
 
-					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceUp[j])
+					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceUp[j]);
 
 					currentPlayer.faceUp.splice(playedCardIndex, 1);
 
@@ -1000,13 +1000,13 @@ $(function () {
 
 		for (var i = 0; i < $chosenCards.length; i++) {
 
-			$chosenCards.eq(i)
+			$chosenCards.eq(i);
 
 			for (var j = 0; j < currentPlayer.faceDown.length; j++) {
 			
 				if($chosenCards.eq(i).data('name') === currentPlayer.faceDown[j].name){
 
-					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceDown[j])
+					playedCardIndex = currentPlayer.faceUp.indexOf(currentPlayer.faceDown[j]);
 
 					currentPlayer.faceDown.splice(playedCardIndex, 1);
 
@@ -1022,7 +1022,7 @@ $(function () {
 
 		if (chosenDeckIndexs.length < deck.length) {
 
-			var drawnCard = deck[chooseRandomCard()]
+			var drawnCard = deck[chooseRandomCard()];
 
 			drawnCard.fadeIn = true;
 
@@ -1049,7 +1049,7 @@ $(function () {
 
 	function currentPlayerHasWon() {
 
-		return (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0 && currentPlayer.faceDown.length ===0)
+		return (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0 && currentPlayer.faceDown.length ===0);
 		
 	}
 

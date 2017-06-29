@@ -4,3 +4,5 @@
 //write readme
 
 //error message has stopped working;
+
+//what have we learned specifically in this project
