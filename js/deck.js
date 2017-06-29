@@ -1,4 +1,4 @@
-var deck = [
+var testDeck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
@@ -21,7 +21,33 @@ var deck = [
 
 ]
 
-var fullDeck = [
+var deck = [
+
+	{name: 'h2',suit: 'h',rank: '2',value: 2},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h6',suit: 'h',rank: '6',value: 6},
+	{name: 'h7',suit: 'h',rank: '7',value: 7},
+	{name: 'h8',suit: 'h',rank: '8',value: 8},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h10',suit: 'h',rank: '10',value: 10},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
+
+]
+
+var Fulldeck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},

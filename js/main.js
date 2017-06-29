@@ -63,10 +63,10 @@ $(function () {
 	var validMove = false;
 	var errorMessage = '';
 
-	var sameRank = false 
-	var hasPlayedNoCards =false 
+	var sameRank = false ;
+	var hasPlayedNoCards =false; 
 
-	var powerCardValues = [2]
+	var powerCardValues = [2, 11]
 
 
 
@@ -792,12 +792,24 @@ $(function () {
 
 		//if there are no cards on the board and the user has played at least one card into the middle
 
+		var realLastCard = 1;
+
+		while (cardsInPlay[cardsInPlay.length-realLastCard].value === 11){
+
+			realLastCard--;
+
+			if (cardsInPlay.length ===0) {
+
+
+			}
+		}
+
 		if (cardsInPlay.length === 0) {
 
 			validMove = true;
 
 		//if the user has played a card and there is at least on card on the board
-		}else if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) { 
+		}else if (cardsInPlay[cardsInPlay.length - realLastCard].value <= parseInt($chosenCards.data('value'))) { 
 
 			//returns true if card played is equal to or higher than the one on the board
 			validMove = true;
@@ -895,20 +907,20 @@ $(function () {
 		errorMessage = "";
 		var $chosenCards = event.data.$playerRow.find('.highlighted');
 		sameRank = identical($chosenCards); // cards are all the same rank
-		validMove = isValidMove($chosenCards)
+		validMove = isValidMove($chosenCards);
 		hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
-		var faceDownCardsPickUp = false; //returns true if user hasn't played selected any cards when clicking ready
+		var faceDownCardsPickUp = false; 
 
 		//if you are on your last cards you can play the card nomatter what. the not four of a kind is to make sure play move isn't played twice
 		if(currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0 && !isFourOfAKind($chosenCards)){
 
 			if (!validMove) {
 
-				faceDownCardsPickUp = true
+				faceDownCardsPickUp = true  //this ensures invalid cards are picked up after a facedown card is played
 			}
 
 
-			validMove = true;
+			validMove = true; //allows facedown cards to be played on the board
 		}
 
 		if (!sameRank) {
@@ -921,7 +933,7 @@ $(function () {
 
 		}else if($chosenCards.data('value') === 10 || isFourOfAKind($chosenCards)){
 
-			cardsInPlay = []
+			cardsInPlay = [];
 			updateView();
 
 		}else if(isAPowerCard($chosenCards)){
@@ -943,7 +955,7 @@ $(function () {
 
 		if(errorMessage === ""){
 
-			removeCardsFromPlayer($chosenCards)
+			removeCardsFromPlayer($chosenCards);
 
 
 			//only picks up on a invalid facedown card play
@@ -960,6 +972,11 @@ $(function () {
 
 					annouceMessage('reset!');
 
+				}
+
+				if ($chosenCards.data('value') === 11) {
+
+					annouceMessage('see through!');
 				}
 
 				updateView();
@@ -979,62 +996,6 @@ $(function () {
 
 		}
 	
-
-
-	
-		// validMove = isValidMove($chosenCards)
-
-
-		// //if you are on your facedown cards
-		// if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
-
-		// 	playMove($chosenCards);
-		// 	showFaceDownCard($chosenCards)
-		// 	removeCardsFromFaceDown($chosenCards);
-
-
-		// 	//if you facedown card turns out to be lower than the one on the board
-		// 	if (!validMove) {
-
-		// 		pickUpCards();
-
-		// 	}
-
-		// 	updateView();
-		// 	currentPlayerRemoveListeners();
-
-		// 	//if the card played is the same rank and higher than the one on the board
-		// } else if (validMove && sameRank && !hasPlayedNoCards) {
-
-		// 	playMove($chosenCards);
-
-		// 	//if you have cards in your hand
-		// 	if (currentPlayer.hand.length !== 0) {
-				
-		// 		removeCardsFromHand($chosenCards);
-
-		// 	//if you have cards in your faceup slots
-		// 	}else if(currentPlayer.faceUp.length !== 0){
-
-		// 		removeCardsFromFaceUp($chosenCards);
-
-		// 	}
-
-
-		// 	//while there are cards in the deck keep drawing until you have 3 in the hand
-		// 	while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
-
-		// 		drawOneCard();
-		// 	}
-
-		// 	updateView();
-		// 	currentPlayerRemoveListeners();
-
-		// } else {
-
-		// 	displayError(errorMessage);
-
-		// }
 
 	}
 
