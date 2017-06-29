@@ -794,6 +794,8 @@ $(function () {
 
 		}
 
+		debugger
+
 
 		var $chosenCards = event.data.playerRow.find('.highlighted')
 		var sameRank = identical($chosenCards);
@@ -801,9 +803,15 @@ $(function () {
 		var errorMessage = '';
 		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
 
+		if (hasPlayedNoCards) {
+
+			errorMessage = 'you must play at least one card!'	
+		}
+
+
 		if (!sameRank) {
 
-			errorMessage = 'you can only play more than one card of the same rank!';
+			errorMessage += '\n you can only play more than one card of the same rank!';
 
 		}
 
@@ -817,11 +825,11 @@ $(function () {
 
 				validMove = true;
 
+			}else {
+
+				errorMessage += "\n you must play a card equal to or higher than the one on the board!"
 			}	
 
-		}else {
-
-			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
 		}
 
 		//if a facedown  card is played errormessage gets assigned by accident
