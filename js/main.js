@@ -63,6 +63,12 @@ $(function () {
 	var validMove = false;
 	var errorMessage = '';
 
+	var sameRank = false 
+	var hasPlayedNoCards =false 
+
+	var powerCardValues = [2]
+
+
 
 	$('#play-game').click(function(event){
 
@@ -782,20 +788,11 @@ $(function () {
 
 	//used to verify the card played into the middle of the board
 
-	function verifyChosenCards(event){
-
-		if(currentPlayer.hand.length === 0){
-
-			debugger			
-
-		}
-
-		debugger
+	function isValidMove($chosenCards) {
 
 
-		var $chosenCards = event.data.$playerRow.find('.highlighted');
-		var sameRank = identical($chosenCards); // cards are all the same rank
-		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined'; //returns true if user hasn't played selected any cards when clicking ready
+		sameRank = identical($chosenCards); // cards are all the same rank
+		hasPlayedNoCards = typeof $chosenCards.data() === 'undefined'; //returns true if user hasn't played selected any cards when clicking ready
 
 		if (hasPlayedNoCards) {
 
@@ -828,6 +825,35 @@ $(function () {
 			}	
 
 		}
+
+		if(isAPowerCard($chosenCards) && sameRank && !hasPlayedNoCards){
+
+			validMove = true;
+		}
+
+		return validMove
+
+
+	}
+
+	function isAPowerCard($chosenCards){
+
+		return powerCardValues.includes($chosenCards.data('value'));
+
+	}
+
+	function verifyChosenCards(event){
+
+		if(currentPlayer.hand.length === 0){
+
+			debugger			
+
+		}
+
+		var $chosenCards = event.data.$playerRow.find('.highlighted');
+
+	
+		validMove = isValidMove($chosenCards)
 
 
 		//if you are on your facedown cards
