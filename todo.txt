@@ -1,5 +1,6 @@
 //add onclick button press like indication (change color?)
 //add delay on choosing facedowncard and then played
 
-//write instructions/readme
+//write readme
 
+//error message has stopped working;
