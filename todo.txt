@@ -1,0 +1,9 @@
+//add win condition and displaywinner
+//add current player indicator (change text color to yellow. use .current-player class)
+//add onclick button press like indication (change color?)
+//add error for picking more than one facedown card (can you only allow one highlighted facedown?)
+//add delay on choosing facedowncard and then played
+
+//found a bug where you can keep pressing ready at setup
+//write instructions
+//cards appear big on load. is this to do with load order of css/js

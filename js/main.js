@@ -34,7 +34,8 @@ $(function () {
 		cardSlotsElement: $('#p1-card-slots'),
 		swapCards: $('#p1-swap-cards'),
 		playerName: 'p1',
-		playerRow: $('#p1-row')
+		playerRow: $('#p1-row'),
+		$playerNameElement : $('#p1-name')
 
 	};
 
@@ -50,9 +51,13 @@ $(function () {
 		cardSlotsElement: $('#p2-card-slots'),
 		swapCards: $('#p2-swap-cards'),
 		playerName: 'p2',
-		playerRow: $('#p2-row')
+		playerRow: $('#p2-row'),
+		$playerNameElement : $('#p2-name')
+
 	
 	};
+
+	var $annoucerElement = $('#annoucer')
 
 	var currentPlayer = player2;
 
@@ -604,8 +609,11 @@ $(function () {
 
 	function setupRound() {
 
+		debugger
+
 		swapPlayer();
 		getCurrentPlayer();
+		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
@@ -622,14 +630,33 @@ $(function () {
 		currentPlayer.swapCards.off();
 		currentPlayer.ready.off();
 		// $gameBoardRow.off();
+		unHighlightCurrentPlayer(currentPlayer);
+
 		if (roundCounter <= 1) {
 
 			setupRound();
 
 		}else{
 
-			playOneRound();
+			if (currentPlayerHasWon()){ 	
+
+				displayWinner();
+
+			}else{
+
+				playOneRound();
+			}
+	
+			
 		}	
+
+	}
+
+	function displayWinner(){
+
+		var playerNumber = currentPlayer.playerName.charAt(1);
+		$annoucerElement.html('player ' + playerNumber + ' has won!' )
+		$annoucerElement.fadeIn();
 
 	}
 
@@ -661,12 +688,16 @@ $(function () {
 	}
 
 	function swapPlayer() {
+
 		roundCounter++;
+
+
 	}
 
 	function getCurrentPlayer() {
-		currentPlayer = (roundCounter % 2 === 0) ?  player2 : player1;
 
+		currentPlayer = (roundCounter % 2 === 0) ?  player2 : player1;
+		
 	}
 
 	function displayError(text) {
@@ -684,9 +715,10 @@ $(function () {
 	}
 
 	function playOneRound() {
-		
+
 		swapPlayer();
 		getCurrentPlayer();
+		highlightCurrentPlayer(currentPlayer);
 		console.log('round : ' + roundCounter);
 		currentPlayer.handElement.on('click', '#' + currentPlayer.playerName + '-show-cards', toggleShowHand);
 		currentPlayer.handElement.on('click', '.' + currentPlayer.playerName + 'hand-face-up-card', highlightCard);
@@ -712,115 +744,17 @@ $(function () {
 
 	}
 
-	function verifyFaceDownCards(event){
 
-		//if currentPlayer.faceUp.length === 0
-		//add facedown card to hand and add cards in play to hand
+	function highlightCurrentPlayer(currentPlayer){
 
-		// debugger
-
-		var $chosenCards = event.data.playerRow.find('.highlighted');
-
-		if (cardsInPlay.length === 0) {
-
-			playMove($chosenCards);
-			removeCardsFromFaceDown($chosenCards);
-
-		}else if(cardsInPlay[cardsInPlay.length-1].value >= parseInt($chosenCards.data('value'))){
-
-			playMove($chosenCards);
-			pickUpCardsInPlay();
-			removeCardsFromFaceDown($chosenCards);
-
-		}else{
-
-			playMove($chosenCards);
-			removeCardsFromFaceDown($chosenCards);
-
-		}
-
-		updateView();
-		currentPlayerRemoveListeners();
-
+		currentPlayer.$playerNameElement.addClass('current-player');
 
 	}
 
-	function isValidMove() {
+	function unHighlightCurrentPlayer(currentPlayer){
 
-		validMove = false;
+		currentPlayer.$playerNameElement.removeClass('current-player');
 
-		if (cardsInPlay.length === 0) {
-
-			validMove = true;
-
-		}else if(cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))){
-
-			validMove = true;
-
-		}
-
-		return validMove;
-		
-	}
-
-	function isOnFaceDownCards(){
-
-		return	currentPlayer.faceUp.length === 0;
-	}
-
-	function hasNoCardsInHand(){
-
-		return currentPlayer.hand.length === 0;
-	}
-
-	function verifyNonFaceDownCards(event){
-
-		var $chosenCards = event.data.playerRow.find('.highlighted')
-		var sameRank = identical($chosenCards);
-		var validMove = isValidMove();
-		var errorMessage = '';
-
-		if (!sameRank) {
-
-			errorMessage = 'you can only play more than one card of the same rank!';
-
-		}
-
-		if(!validMove) {
-
-			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
-		}
-
-		if (validMove && sameRank) {
-
-			playMove($chosenCards);
-
-			if (!hasNoCardsInHand()) {
-				
-				removeCardsFromHand($chosenCards);
-
-			}else if(!isOnFaceDownCards() && hasNoCardsInHand()){
-
-				removeCardsFromFaceUp($chosenCards);
-
-			}else if(isOnFaceDownCards() && hasNoCardsInHand()){
-
-				removeCardsFromFaceDown($chosenCards);
-
-			}
-			
-			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
-				drawOneCard();
-			}
-
-			updateView();
-			currentPlayerRemoveListeners();
-
-		}else {
-
-			displayError(errorMessage)
-
-		}
 	}
 
 	function verifyChosenCards(event){
@@ -832,18 +766,86 @@ $(function () {
 		}
 
 
-		if(isOnFaceDownCards() && hasNoCardsInHand()){
+		var $chosenCards = event.data.playerRow.find('.highlighted')
+		var sameRank = identical($chosenCards);
+		var validMove = false;
+		var errorMessage = '';
+		var hasPlayedNoCards = typeof $chosenCards.data() === 'undefined';
 
-			verifyFaceDownCards(event);
+		if (!sameRank) {
 
-		}else{
-			
-			verifyNonFaceDownCards(event);
+			errorMessage = 'you can only play more than one card of the same rank!';
 
 		}
 
+		if (cardsInPlay.length === 0 && !hasPlayedNoCards) {
+
+			validMove = true;
+
+		}else if(!hasPlayedNoCards){
+
+			if (cardsInPlay[cardsInPlay.length-1].value <= parseInt($chosenCards.data('value'))) {
+
+				validMove = true;
+
+			}	
+
+		}else {
+
+			errorMessage += "\n you must play a card equal to or higher than the one on the board!"
+		}
+
+		//if a facedown  card is played errormessage gets assigned by accident
+
+		if (currentPlayer.faceUp.length === 0 && currentPlayer.hand.length === 0) {
+
+			playMove($chosenCards);
+			removeCardsFromFaceDown($chosenCards);
+
+			if (!validMove) {
+
+				pickUpCards();
+
+			}
+
+			updateView();
+			currentPlayerRemoveListeners();
 
 
+		} else if (validMove && sameRank && !hasPlayedNoCards) {
+
+			playMove($chosenCards);
+
+			if (currentPlayer.hand.length !== 0) {
+				
+				removeCardsFromHand($chosenCards);
+
+			}else if(currentPlayer.faceUp.length !== 0){
+
+				removeCardsFromFaceUp($chosenCards);
+
+			}
+
+			// }else if(currentPlayer.faceUp.length === 0){
+
+			// 	removeCardsFromFaceDown($chosenCards);
+
+			// }
+			
+
+			while(currentPlayer.hand.length < 3 && (chosenDeckIndexs.length < deck.length)){
+
+				drawOneCard();
+			}
+
+			updateView();
+			currentPlayerRemoveListeners();
+
+		} else {
+
+			displayError(errorMessage)
+
+		}
 
 	}
 
@@ -994,6 +996,13 @@ $(function () {
 		cardsInPlay = [];
 
 	}
+
+	function currentPlayerHasWon() {
+
+		return (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0 && currentPlayer.faceDown.length ===0)
+		
+	}
+
 
 	initalSetup();
 	setupRound();
