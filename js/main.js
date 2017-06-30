@@ -667,15 +667,11 @@ $(function () {
 
 		}else{
 
-			if (currentPlayerHasWon()){ 	
-
-				displayWinner();
-
-			}else{
+			if (!currentPlayerHasWon()){ 	
 
 				playOneRound();
+
 			}
-	
 			
 		}	
 
@@ -963,7 +959,9 @@ $(function () {
 
 			}
 
-			while (currentPlayer.hand.length < 3) {
+
+
+			while (currentPlayer.hand.length < 3 && chosenDeckIndexs.length < deck.length) {
 
 				drawOneCard();
 
@@ -986,10 +984,22 @@ $(function () {
 				updateView();
 				currentPlayerRemoveListeners();
 
+				if (currentPlayerHasWon()) {
+
+					displayWinner();
+					
+				}
+
 			}else{
 
 				annouceMessage('Burn!');
 				updateView();
+
+				if (currentPlayerHasWon()) {
+
+					displayWinner();
+					
+				}
 
 			}
 
