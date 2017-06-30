@@ -26,6 +26,14 @@ Players can play more than one card if they have the same rank i.e 3 queen's.
 
 If you cannot play a card higher than the one in the middle you must pick them up by clicking on them.  the turn is then passed to the other player
 
+However power cards can be played on anything.
+
+ * 0 - Burns the cards in play and you get another go
+ * 2 - Resets the cards in play to 2
+ * J - Is seethrough and the oposing player must play the card underneath.
+
+In addition to this if you play 4 of a kind this also burns the cards in play and you get another go.
+
 each player will automatically draw cards if they have less than 3 cards in thier hand until ther are no more cards.
 
 in the deck. At this point once you have used all cards in your hand you can move onto your face up cards.
