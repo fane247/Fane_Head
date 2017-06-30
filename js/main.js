@@ -547,6 +547,8 @@ $(function () {
 
 	function toggleShowHand(){
 
+	
+
 		var zIndex = $('.' + currentPlayer.playerName + 'hand-face-up-card').css('z-index');
 
 		if (zIndex === '0') {
@@ -955,6 +957,8 @@ $(function () {
 			//only picks up on a invalid facedown card play
 			if (faceDownCardsPickUp){
 
+				annouceMessage('Oh No! not high enough');
+				playSound();
 				pickUpCards();
 
 			}
@@ -962,6 +966,8 @@ $(function () {
 
 
 			while (currentPlayer.hand.length < 3 && chosenDeckIndexs.length < deck.length) {
+
+
 
 				drawOneCard();
 
@@ -1208,6 +1214,14 @@ $(function () {
 
 		return (currentPlayer.hand.length === 0 && currentPlayer.faceUp.length === 0 && currentPlayer.faceDown.length ===0);
 		
+	}
+
+	function playSound(){
+
+		var audioElement = document.createElement('audio');
+		audioElement.setAttribute('src', 'sound/Oh-no_.mp3');	
+		audioElement.play();
+
 	}
 
 
