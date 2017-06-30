@@ -792,24 +792,24 @@ $(function () {
 
 		//if there are no cards on the board and the user has played at least one card into the middle
 
-		var realLastCard = 1;
+		var cardsInPlayJRemoved = cardsInPlay;
 
-		while (cardsInPlay[cardsInPlay.length-realLastCard].value === 11){
+		for (var i = cardsInPlayJRemoved.length - 1; i >= 0; i--) {
+			
+			if(cardsInPlayJRemoved[i].value === 11){
 
-			realLastCard--;
-
-			if (cardsInPlay.length ===0) {
-
-
+				cardsInPlayJRemoved.splice(cardsInPlayJRemoved.indexOf(), 1);
 			}
+
 		}
 
-		if (cardsInPlay.length === 0) {
+
+		if (cardsInPlayJRemoved.length === 0) {
 
 			validMove = true;
 
 		//if the user has played a card and there is at least on card on the board
-		}else if (cardsInPlay[cardsInPlay.length - realLastCard].value <= parseInt($chosenCards.data('value'))) { 
+		}else if (cardsInPlayJRemoved[cardsInPlayJRemoved.length - 1].value <= parseInt($chosenCards.data('value'))) { 
 
 			//returns true if card played is equal to or higher than the one on the board
 			validMove = true;
@@ -962,6 +962,12 @@ $(function () {
 			if (faceDownCardsPickUp){
 
 				pickUpCards();
+
+			}
+
+			if (currentPlayer.hand.length < 3) {
+
+				drawOneCard();
 
 			}
 
