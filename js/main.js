@@ -944,7 +944,7 @@ $(function () {
 
 		}else if(!validMove){
 
-			errorMessage += "\n you must play a card equal to or higher than the one on the board!";
+			errorMessage += "\n you must play a card equal to or higher than a " + cardsInPlayJRemoved[cardsInPlayJRemoved.length - 1].rank ;
 
 		}
 
@@ -963,7 +963,7 @@ $(function () {
 
 			}
 
-			if (currentPlayer.hand.length < 3) {
+			while (currentPlayer.hand.length < 3) {
 
 				drawOneCard();
 

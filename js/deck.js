@@ -47,7 +47,7 @@ var powerCardJdeck = [
 
 ]
 
-var deck = [
+var fourOfAKindDeck = [
 
 
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
@@ -80,7 +80,7 @@ var deck = [
 
 
 
-var Fulldeck = [
+var deck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
