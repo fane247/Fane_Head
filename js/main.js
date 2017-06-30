@@ -84,6 +84,8 @@ $(function () {
 
 	})
 
+	var cardsInPlayJRemoved = [];
+
 	
 
 	function chooseRandomCard(){
@@ -792,7 +794,7 @@ $(function () {
 
 		//if there are no cards on the board and the user has played at least one card into the middle
 
-		var cardsInPlayJRemoved = cardsInPlay;
+		cardsInPlayJRemoved = cardsInPlay;
 
 		for (var i = cardsInPlayJRemoved.length - 1; i >= 0; i--) {
 			
@@ -846,12 +848,11 @@ $(function () {
 		for (var i = 0; i < $chosenCards.length; i++) {
 
 			var cardName = $chosenCards.eq(i).data('name');
-
 			cardsToPlay.push(getCardByName(cardName));
 
 		}
 
-		checkingCardsInplay = cardsInPlay.concat(cardsToPlay);
+		checkingCardsInplay = cardsInPlayJRemoved.concat(cardsToPlay);
 
 		if (checkingCardsInplay.length < 4) {
 
@@ -859,13 +860,10 @@ $(function () {
 
 		}else{
 
-
-
 			var lastIndex = checkingCardsInplay.length-1;
 			var fourthToLastIndex = lastIndex -3;
 
 			var lastFourCards = checkingCardsInplay.slice(fourthToLastIndex,lastIndex)
-			
 
 			return identicalCardsObject(lastFourCards);
 		}

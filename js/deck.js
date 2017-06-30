@@ -21,7 +21,7 @@ var testDeck = [
 
 ]
 
-var deck = [
+var powerCardJdeck = [
 
 	{name: 'h2',suit: 'h',rank: '2',value: 2},
 	{name: 'h3',suit: 'h',rank: '3',value: 3},
@@ -46,6 +46,39 @@ var deck = [
 	{name: 'cJ',suit: 'c',rank: 'J',value: 11},
 
 ]
+
+var deck = [
+
+
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9},
+	{name: 'h3',suit: 'h',rank: '3',value: 3},
+	{name: 'h4',suit: 'h',rank: '4',value: 4},
+	{name: 'h5',suit: 'h',rank: '5',value: 5},
+	{name: 'h9',suit: 'h',rank: '9',value: 9}
+
+]
+
+
+
 
 var Fulldeck = [
 
